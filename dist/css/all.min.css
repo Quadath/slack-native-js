@@ -1,0 +1,5 @@
+.group-dialogue{background-color:#fff;height:100vh}
+.group-info{height:100vh;width:275px;background-color:#25272a;opacity:.75}
+.group-list{width:71.5px;height:100vh;background-color:#000;opacity:.7;border:1px solid #000}.group-list-icon{height:40px;width:40px}
+body{margin:0}.main{display:grid;grid-template:1fr/71.5px 275px 4fr 200px;height:100vh;width:100vw;position:relative;background:url("../img/background-blured.jpg") center center/cover no-repeat}
+.user-info{height:100vh}

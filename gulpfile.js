@@ -1,123 +1,86 @@
-const gulp = require("gulp");
+const gulp        = require('gulp');
+const browserSync = require('browser-sync');
+const sass        = require('gulp-sass')(require('sass'));
 const concat = require('gulp-concat');
-const webpack = require("webpack-stream");
-const browsersync = require("browser-sync");
-const sass = require('gulp-sass')(require('sass'));
+const rename = require("gulp-rename");
+const htmlmin = require('gulp-htmlmin');
 
-const dist = "./dist/";
+function server() {
+    browserSync({server:{baseDir: "dist"}});
+    browserSync.stream;
+    gulp.watch("src/*.html", reloading);
+    }
 
-gulp.task("copy-html", () => {
-    return gulp.src("./src/index.html")
-        .pipe(gulp.dest(dist))
-        .pipe(browsersync.stream());
-});
-
-gulp.task("build-js", () => {
-    return gulp.src("./src/js/main.js")
-        .pipe(webpack({
-            mode: 'development',
-            output: {
-                filename: 'script.js'
-            },
-            watch: false,
-            devtool: "source-map",
-            module: {
-                rules: [{
-                    test: /\.m?js$/,
-                    exclude: /(node_modules|bower_components)/,
-                    use: {
-                        loader: 'babel-loader',
-                        options: {
-                            presets: [
-                                ['@babel/preset-env', {
-                                    debug: true,
-                                    corejs: 3,
-                                    useBuiltIns: "usage"
-                                }]
-                            ]
-                        }
-                    }
-                }]
-            }
-        }))
-        .pipe(gulp.dest(dist))
-        .on("end", browsersync.reload);
-});
-
-gulp.task("copy-assets", () => {
-    return gulp.src("./src/assets/**/*.*")
-        .pipe(gulp.dest(dist + "/assets"))
-        .on("end", browsersync.reload);
-});
-
-function styles(done) {
-    gulp.src('src/sass/*sass')
-        .pipe(sass({
-            errorLogToConsole: true,
-        })).on('error', console.error.bind(console))
-        .pipe(combine('all.css'))
-        .pipe(gulp.dest('src/css/'))
-        .pipe(browserSync.reload({
-            stream: true
-        }))
+function reloading(done)
+{
+    browserSync.reload();
+    console.log('\x1b[32m','Site reloaded')
     done();
-    console.log('\x1b[32m', 'SASS compiled.');
 }
 
-gulp.task('sass', function () {
-    return gulp.src('src/sass/*sass')
+function styles(done)
+{
+    gulp.src('src/sass/*sass')
         .pipe(sass({
-            errorLogToConsole: true,
+            errorLogToConsole:true,
         })).on('error', console.error.bind(console))
         .pipe(concat('all.css'))
-        .pipe(gulp.dest('src/css/'))
         .pipe(gulp.dest('dist/css/'))
         .pipe(browserSync.reload({
             stream: true
-        }))
+          }))
+        done();
+    gulp.src('src/sass/*sass')
+        .pipe(sass({
+            errorLogToConsole:true,
+            outputStyle:'compressed'
+        })).on('error', console.error.bind(console))
+        .pipe(concat('all.css'))
+        .pipe(rename({suffix: '.min'}))
+        .pipe(gulp.dest('dist/css/'));
+    console.log('\x1b[32m','SASS compiled.');
+}
+gulp.task('watch', function() {
+    gulp.watch("src/sass/*sass", gulp.parallel(styles, reloading));
+    gulp.watch("src/*.html").on('change', gulp.parallel('html'));
+    gulp.watch("src/js/**/*.js").on('change', gulp.parallel('scripts'));
+    gulp.watch("src/fonts/**/*").on('all', gulp.parallel('fonts'));
+    gulp.watch("src/icons/**/*").on('all', gulp.parallel('icons'));
+    gulp.watch("src/img/**/*").on('all', gulp.parallel('images'));
 });
 
-gulp.task("watch", () => {
-    browsersync.init({
-        server: "./dist/",
-        port: 4000,
-        notify: true
-    });
-
-    gulp.watch("src/sass/*.+(scss|sass|css)", gulp.parallel("sass", "copy-html"));
-    gulp.watch("./src/index.html", gulp.parallel("copy-html"));
-    gulp.watch("./src/assets/**/*.*", gulp.parallel("copy-assets"));
-    gulp.watch("./src/js/**/*.js", gulp.parallel("build-js"));
+gulp.task('html', function () {
+    return gulp.src("src/*.html")
+        .pipe(htmlmin({ collapseWhitespace: true }))
+        .pipe(gulp.dest("dist/"));
+});
+gulp.task('scripts', function () {
+    return gulp.src("src/js/**/*.js")
+        .pipe(gulp.dest("dist/js"))
+        .pipe(browserSync.stream());
 });
 
-gulp.task("build", gulp.parallel("copy-html", "copy-assets", "build-js"));
-
-gulp.task("build-prod-js", () => {
-    return gulp.src("./src/js/main.js")
-        .pipe(webpack({
-            mode: 'production',
-            output: {
-                filename: 'script.js'
-            },
-            module: {
-                rules: [{
-                    test: /\.m?js$/,
-                    exclude: /(node_modules|bower_components)/,
-                    use: {
-                        loader: 'babel-loader',
-                        options: {
-                            presets: [
-                                ['@babel/preset-env', {
-                                    corejs: 3,
-                                    useBuiltIns: "usage"
-                                }]
-                            ]
-                        }
-                    }
-                }]
-            }
-        }))
-        .pipe(gulp.dest(dist));
+gulp.task('fonts', function () {
+    return gulp.src("src/fonts/**/*")
+        .pipe(gulp.dest("dist/fonts"))
+        .pipe(browserSync.stream());
 });
 
-gulp.task("default", gulp.parallel("watch", "build"));
+gulp.task('icons', function () {
+    return gulp.src("src/icons/**/*")
+        .pipe(gulp.dest("dist/icons"))
+        .pipe(browserSync.stream());
+});
+
+gulp.task('images', function () {
+    return gulp.src("src/img/**/*")
+        .pipe(gulp.dest("dist/img"))
+        .pipe(browserSync.stream());
+});
+
+function print(done)
+{
+    console.log('\x1b[36m','SASS compiling started.');
+    done();
+}
+gulp.task('default', gulp.parallel('watch', server, styles, 'scripts', 'fonts', 'icons', 'html', 'images'));

@@ -261,9 +261,90 @@ body {
   display: flex;
   flex-direction: row;
 }
+
+.al-con-cent {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
 .user-info {
+  display: grid;
+  grid-template-rows: 200px 1fr;
   height: 100vh;
   background: #FFFFFF;
   opacity: 0.8;
   border: 1px solid #000000;
+}
+.user-info .padding {
+  padding: 14px 19px;
+  display: grid;
+  grid-template-rows: 53px 40px 44px 1fr;
+}
+.user-info-photo {
+  background-color: #333333;
+}
+.user-info-name {
+  font-weight: 700;
+  font-size: 16px;
+  line-height: 23px;
+}
+.user-info-name::after {
+  content: "";
+  display: inline-block;
+  height: 8px;
+  width: 8px;
+  background-color: #70CC16;
+  border-radius: 50%;
+  margin-left: 6px;
+}
+.user-info-performance {
+  color: #5F6164;
+  font-size: 12px;
+  line-height: 14px;
+}
+.user-info-social {
+  display: flex;
+  justify-content: space-between;
+  width: 106px;
+}
+.user-info-social-item {
+  position: relative;
+  height: 22px;
+  width: 22px;
+  border-radius: 50%;
+  background-color: #e8e8e8;
+}
+.user-info-actions button {
+  height: 25px;
+  background-color: #3577EF;
+  border-radius: 4px;
+  color: white;
+  border: none;
+  font-weight: 700;
+  font-size: 13px;
+  line-height: 16px;
+}
+.user-info-actions-message {
+  width: 133px;
+}
+.user-info-actions-other {
+  width: 25px;
+  margin-left: 3px;
+}
+.user-info-details {
+  display: flex;
+  align-items: flex-start;
+}
+.user-info-details span {
+  margin-top: 11px;
+  font-weight: 400;
+  line-height: 14px;
+  font-size: 12px;
+  color: #5F6164;
+}
+.user-info-details p {
+  margin: 0;
+  line-height: 17px;
+  font-size: 14px;
 }

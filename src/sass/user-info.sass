@@ -1,5 +1,67 @@
 .user-info
+    .padding
+        padding: 14px 19px
+        display: grid
+        grid-template-rows: 53px 40px 44px 1fr
+    display: grid
+    grid-template-rows: 200px 1fr
     height: 100vh
     background: #FFFFFF
     opacity: 0.8
     border: 1px solid #000000
+    &-photo
+        background-color: #333333
+    &-name
+        font-weight: 700
+        font-size: 16px
+        line-height: 23px
+        &::after
+            content: ''
+            display: inline-block
+            height: 8px
+            width: 8px
+            background-color: #70CC16
+            border-radius: 50%
+            margin-left: 6px
+    &-performance
+        color: #5F6164
+        font-size: 12px
+        line-height: 14px
+    &-social
+        display: flex
+        justify-content: space-between
+        width: 106px
+        &-item
+            position: relative
+            height: 22px
+            width: 22px
+            border-radius: 50%
+            background-color: #e8e8e8
+    &-actions
+        button
+            height: 25px
+            background-color: #3577EF
+            border-radius: 4px
+            color: white
+            border: none
+            font-weight: 700
+            font-size: 13px
+            line-height: 16px
+        &-message
+            width: 133px
+        &-other
+            width: 25px
+            margin-left: 3px
+    &-details
+        display: flex
+        align-items: flex-start
+        span
+            margin-top: 11px
+            font-weight: 400
+            line-height: 14px
+            font-size: 12px
+            color: #5F6164
+        p
+            margin: 0
+            line-height: 17px
+            font-size: 14px

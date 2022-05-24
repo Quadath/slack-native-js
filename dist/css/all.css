@@ -2,6 +2,45 @@
   background-color: #fff;
   height: 100vh;
 }
+.group-dialogue-messages {
+  margin: 32px 22px 0;
+}
+.group-dialogue-title {
+  margin: 0px;
+  font-weight: 700;
+  font-size: 20px;
+  line-height: 24px;
+  display: inline;
+}
+.group-dialogue-header {
+  border-bottom: 1px solid #b6b6b6;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: 20px;
+}
+.group-dialogue-header span {
+  display: flex;
+  align-items: center;
+  color: #a4a4a4;
+  font-size: 14px;
+  line-height: 17px;
+}
+.group-dialogue-header span img {
+  margin-right: 6px;
+}
+.group-dialogue-header input {
+  height: 33px;
+  margin-left: 33px;
+  border: 1px solid #bbbbbbb;
+  padding: 0 16px;
+}
+.group-dialogue-header #bell-channel {
+  margin-left: 18px;
+}
+.group-dialogue-header #menu-channel {
+  margin-left: 18px;
+}
 .group-info {
   display: grid;
   grid-template-rows: 23px 51px 47px 1fr 15px 1fr;

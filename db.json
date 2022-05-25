@@ -1,0 +1,25 @@
+{
+    "quadath": {
+        "servers": {
+            "100": {
+                "name": "Some server",
+                "server-pic": "../img/channes/001.png",
+                "channels": [
+                    {
+                        "name": "general",
+                        "messages": [
+                            {
+                                "order": {
+                                    "name": "Jeshua Stout",
+                                    "profile-pic": "../img/users/004.png"
+                                },
+                                "time": "6:38 PM",
+                                "text": "@pierrhack I did for 6 days in Iceland" 
+                            }
+                        ]
+                    }
+                ]
+            }
+        }
+    }
+}

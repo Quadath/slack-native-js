@@ -3,6 +3,7 @@ const browserSync = require('browser-sync');
 const sass        = require('gulp-sass')(require('sass'));
 const concat = require('gulp-concat');
 const rename = require("gulp-rename");
+const webpack = require("webpack-stream");
 const htmlmin = require('gulp-htmlmin');
 
 function server() {
@@ -55,9 +56,35 @@ gulp.task('html', function () {
         .pipe(gulp.dest("dist/"));
 });
 gulp.task('scripts', function () {
-    return gulp.src("src/js/**/*.js")
-        .pipe(gulp.dest("dist/js"))
-        .pipe(browserSync.stream());
+    return gulp.src("./src/js/main.js")
+    .pipe(webpack({
+        mode: 'development',
+        output: {
+            filename: 'script.js'
+        },
+        watch: false,
+        devtool: "source-map",
+        module: {
+            rules: [
+              {
+                test: /\.m?js$/,
+                exclude: /(node_modules|bower_components)/,
+                use: {
+                  loader: 'babel-loader',
+                  options: {
+                    presets: [['@babel/preset-env', {
+                        debug: true,
+                        corejs: 3,
+                        useBuiltIns: "usage"
+                    }]]
+                  }
+                }
+              }
+            ]
+          }
+    }))
+    .pipe(gulp.dest("dist/"))
+    .on("end", browserSync.reload);
 });
 
 gulp.task('fonts', function () {

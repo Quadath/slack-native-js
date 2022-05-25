@@ -1,4 +1,6 @@
 .group-dialogue {
+  display: grid;
+  grid-template-rows: 1fr 75px;
   background-color: #fff;
   height: 100vh;
 }
@@ -90,6 +92,22 @@
 }
 .group-dialogue-header #menu-channel {
   margin-left: 18px;
+}
+.group-dialogue-send {
+  display: flex;
+  justify-content: space-between;
+  padding: 25px;
+  border-top: 1px solid #b6b6b6;
+}
+.group-dialogue-send .wrapper {
+  width: 560px;
+  justify-content: space-between;
+  display: flex;
+  align-items: center;
+}
+.group-dialogue-send input {
+  width: 500px;
+  border: none;
 }
 .group-info {
   display: grid;
@@ -324,6 +342,7 @@ body {
   font-weight: 700;
   font-size: 13px;
   line-height: 16px;
+  cursor: pointer;
 }
 .user-info-actions-message {
   width: 133px;

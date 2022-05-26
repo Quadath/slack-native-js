@@ -1,6 +1,49 @@
 /******/ (() => { // webpackBootstrap
 /******/ 	var __webpack_modules__ = ({
 
+/***/ "./src/js/components/group-info.js":
+/*!*****************************************!*\
+  !*** ./src/js/components/group-info.js ***!
+  \*****************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var core_js_modules_es_array_for_each_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! core-js/modules/es.array.for-each.js */ "./node_modules/core-js/modules/es.array.for-each.js");
+/* harmony import */ var core_js_modules_es_array_for_each_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_es_array_for_each_js__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var core_js_modules_es_object_to_string_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! core-js/modules/es.object.to-string.js */ "./node_modules/core-js/modules/es.object.to-string.js");
+/* harmony import */ var core_js_modules_es_object_to_string_js__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_es_object_to_string_js__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var core_js_modules_web_dom_collections_for_each_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! core-js/modules/web.dom-collections.for-each.js */ "./node_modules/core-js/modules/web.dom-collections.for-each.js");
+/* harmony import */ var core_js_modules_web_dom_collections_for_each_js__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_web_dom_collections_for_each_js__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var core_js_modules_es_function_name_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! core-js/modules/es.function.name.js */ "./node_modules/core-js/modules/es.function.name.js");
+/* harmony import */ var core_js_modules_es_function_name_js__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_es_function_name_js__WEBPACK_IMPORTED_MODULE_3__);
+
+
+
+
+
+var groupInfo = function groupInfo(data, index) {
+  console.log(data.servers[index].channels);
+  var channelList = document.querySelector('.group-info-channels-list'),
+      channelCount = document.querySelector('#channel-count');
+  channelCount.textContent = data.servers[index].channels.length;
+  data.servers[index].channels.forEach(function (item, i) {
+    var channelListItem = document.createElement('div'),
+        span = document.createElement('span');
+    channelListItem.classList.add('group-info-channels-list-item');
+    span.textContent = "# ".concat(item.name);
+    channelListItem.append(span);
+    channelList.append(channelListItem);
+  });
+};
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (groupInfo);
+
+/***/ }),
+
 /***/ "./src/js/components/group-list.js":
 /*!*****************************************!*\
   !*** ./src/js/components/group-list.js ***!
@@ -32,6 +75,7 @@ var groupList = function groupList(data) {
     icon.setAttribute('src', item.serverpic);
     groupListItem.append(icon);
     groupListItem.classList.add('group-list-icon');
+    groupListItem.setAttribute('index', i);
     groupList.append(groupListItem);
   });
 };
@@ -5505,17 +5549,21 @@ var __webpack_exports__ = {};
   \************************/
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _components_group_list__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./components/group-list */ "./src/js/components/group-list.js");
-/* harmony import */ var _services_GetService__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./services/GetService */ "./src/js/services/GetService.js");
+/* harmony import */ var _components_group_info__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./components/group-info */ "./src/js/components/group-info.js");
+/* harmony import */ var _services_GetService__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./services/GetService */ "./src/js/services/GetService.js");
+
 
 
 window.addEventListener('DOMContentLoaded', function () {
-  var getService = new _services_GetService__WEBPACK_IMPORTED_MODULE_1__["default"]();
+  var currentGroup = 0;
+  var getService = new _services_GetService__WEBPACK_IMPORTED_MODULE_2__["default"]();
   getService.getResource('/quadath').then(function (res) {
     return update(res);
   });
 
   function update(data) {
     (0,_components_group_list__WEBPACK_IMPORTED_MODULE_0__["default"])(data);
+    (0,_components_group_info__WEBPACK_IMPORTED_MODULE_1__["default"])(data, currentGroup);
   }
 });
 })();

@@ -10,6 +10,7 @@ const groupList = (data) => {
         
         groupListItem.append(icon);
         groupListItem.classList.add('group-list-icon');
+        groupListItem.setAttribute('index', i);
         
         groupList.append(groupListItem);
     })

@@ -18,6 +18,19 @@
                                 "text": "@pierrhack I did for 6 days in Iceland" 
                             }
                         ]
+                    },
+                    {
+                        "name": "support",
+                        "messages": [
+                            {
+                                "order": {
+                                    "name": "Orlando Diggs",
+                                    "profile-pic": "../img/users/001.png"
+                                },
+                                "time": "6:35 PM",
+                                "text": "What this channel does?" 
+                            }
+                        ]
                     }
                 ]
             },

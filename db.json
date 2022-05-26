@@ -1,9 +1,10 @@
 {
     "quadath": {
-        "servers": {
-            "100": {
+        "servers": [
+            {
+                "id": 100,
                 "name": "Some server",
-                "server-pic": "../img/channes/001.png",
+                "serverpic": "../img/channels/001.png",
                 "channels": [
                     {
                         "name": "general",
@@ -19,7 +20,27 @@
                         ]
                     }
                 ]
+            },
+            {
+                "id": 101,
+                "name": "Also server",
+                "serverpic": "../img/channels/002.png",
+                "channels": [
+                    {
+                        "name": "general",
+                        "messages": [
+                            {
+                                "order": {
+                                    "name": "Jeshua Stout",
+                                    "profile-pic": "../img/users/004.png"
+                                },
+                                "time": "6:38 PM",
+                                "text": "Hi" 
+                            }
+                        ]
+                    }
+                ]
             }
-        }
+        ]
     }
 }

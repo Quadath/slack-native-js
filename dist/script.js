@@ -12,17 +12,28 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony import */ var _services_GetService__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../services/GetService */ "./src/js/services/GetService.js");
+/* harmony import */ var core_js_modules_es_array_for_each_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! core-js/modules/es.array.for-each.js */ "./node_modules/core-js/modules/es.array.for-each.js");
+/* harmony import */ var core_js_modules_es_array_for_each_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_es_array_for_each_js__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var core_js_modules_es_object_to_string_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! core-js/modules/es.object.to-string.js */ "./node_modules/core-js/modules/es.object.to-string.js");
+/* harmony import */ var core_js_modules_es_object_to_string_js__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_es_object_to_string_js__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var core_js_modules_web_dom_collections_for_each_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! core-js/modules/web.dom-collections.for-each.js */ "./node_modules/core-js/modules/web.dom-collections.for-each.js");
+/* harmony import */ var core_js_modules_web_dom_collections_for_each_js__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_web_dom_collections_for_each_js__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var _services_GetService__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../services/GetService */ "./src/js/services/GetService.js");
 
 
-var groupList = function groupList() {
-  var getService = new _services_GetService__WEBPACK_IMPORTED_MODULE_0__["default"]();
+
+
+
+var groupList = function groupList(data) {
   var groupList = document.querySelector('.group-list');
-  var data;
-  getService.getResource('/quadath').then(function (res) {
-    return data = res;
+  data.servers.forEach(function (item, i) {
+    var groupListItem = document.createElement("div"),
+        icon = document.createElement('img');
+    icon.setAttribute('src', item.serverpic);
+    groupListItem.append(icon);
+    groupListItem.classList.add('group-list-icon');
+    groupList.append(groupListItem);
   });
-  console.log(data);
 };
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (groupList);
@@ -5494,9 +5505,18 @@ var __webpack_exports__ = {};
   \************************/
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _components_group_list__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./components/group-list */ "./src/js/components/group-list.js");
+/* harmony import */ var _services_GetService__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./services/GetService */ "./src/js/services/GetService.js");
+
 
 window.addEventListener('DOMContentLoaded', function () {
-  (0,_components_group_list__WEBPACK_IMPORTED_MODULE_0__["default"])();
+  var getService = new _services_GetService__WEBPACK_IMPORTED_MODULE_1__["default"]();
+  getService.getResource('/quadath').then(function (res) {
+    return update(res);
+  });
+
+  function update(data) {
+    (0,_components_group_list__WEBPACK_IMPORTED_MODULE_0__["default"])(data);
+  }
 });
 })();
 

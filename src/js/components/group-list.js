@@ -1,13 +1,18 @@
 import GetService from "../services/GetService";
 
-const groupList = () => {
-    const getService = new GetService();
+const groupList = (data) => {
     const groupList = document.querySelector('.group-list');
 
-    let data;
-
-    getService.getResource('/quadath')
-        .then((res) => data = res);
-    console.log(data);
+    data.servers.forEach((item ,i) => {
+        const groupListItem = document.createElement("div"),
+        icon = document.createElement('img');
+        icon.setAttribute('src', item.serverpic);
+        
+        groupListItem.append(icon);
+        groupListItem.classList.add('group-list-icon');
+        
+        groupList.append(groupListItem);
+    })
+  
 }
 export default groupList;

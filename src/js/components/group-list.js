@@ -1,9 +1,14 @@
 import GetService from "../services/GetService";
 
-const groupList = (data) => {
-    const groupList = document.querySelector('.group-list');
+const groupList = (state) => {
+    const prevElemets = document.querySelectorAll('.group-list-icon'),
+        groupList = document.querySelector('.group-list')
+    
+    prevElemets.forEach(item => {
+        item.remove();
+    })
 
-    data.servers.forEach((item ,i) => {
+    state.data.servers.forEach((item ,i) => {
         const groupListItem = document.createElement("div"),
         icon = document.createElement('img');
         icon.setAttribute('src', item.serverpic);

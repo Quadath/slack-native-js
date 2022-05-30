@@ -1,6 +1,54 @@
 /******/ (() => { // webpackBootstrap
 /******/ 	var __webpack_modules__ = ({
 
+/***/ "./src/js/components/changeState.js":
+/*!******************************************!*\
+  !*** ./src/js/components/changeState.js ***!
+  \******************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var core_js_modules_es_array_for_each_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! core-js/modules/es.array.for-each.js */ "./node_modules/core-js/modules/es.array.for-each.js");
+/* harmony import */ var core_js_modules_es_array_for_each_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_es_array_for_each_js__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var core_js_modules_es_object_to_string_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! core-js/modules/es.object.to-string.js */ "./node_modules/core-js/modules/es.object.to-string.js");
+/* harmony import */ var core_js_modules_es_object_to_string_js__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_es_object_to_string_js__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var core_js_modules_web_dom_collections_for_each_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! core-js/modules/web.dom-collections.for-each.js */ "./node_modules/core-js/modules/web.dom-collections.for-each.js");
+/* harmony import */ var core_js_modules_web_dom_collections_for_each_js__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_web_dom_collections_for_each_js__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var core_js_modules_es_array_find_index_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! core-js/modules/es.array.find-index.js */ "./node_modules/core-js/modules/es.array.find-index.js");
+/* harmony import */ var core_js_modules_es_array_find_index_js__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_es_array_find_index_js__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony import */ var core_js_modules_es_function_name_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! core-js/modules/es.function.name.js */ "./node_modules/core-js/modules/es.function.name.js");
+/* harmony import */ var core_js_modules_es_function_name_js__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_es_function_name_js__WEBPACK_IMPORTED_MODULE_4__);
+/* harmony import */ var core_js_modules_es_array_slice_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! core-js/modules/es.array.slice.js */ "./node_modules/core-js/modules/es.array.slice.js");
+/* harmony import */ var core_js_modules_es_array_slice_js__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_es_array_slice_js__WEBPACK_IMPORTED_MODULE_5__);
+
+
+
+
+
+
+
+var changeState = function changeState(state, _changeState) {
+  var channels = document.querySelectorAll('.group-info-channels-list-item span');
+  channels.forEach(function (item) {
+    item.addEventListener('click', function () {
+      var index = state.data.servers[state.currentGroup].channels.findIndex(function (chan) {
+        return chan.name == item.childNodes[0].textContent.slice(2);
+      }); // console.log(`${state.data.servers[state.currentGroup].channels[0].name} ${item.childNodes[0].textContent.slice(2)}`)
+      // console.log(state.data.servers[state.currentGroup].channels[0].name == item.childNodes[0].textContent.slice(2))
+
+      _changeState('currentChannel', index);
+    });
+  });
+};
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (changeState);
+
+/***/ }),
+
 /***/ "./src/js/components/group-info.js":
 /*!*****************************************!*\
   !*** ./src/js/components/group-info.js ***!
@@ -25,11 +73,16 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-var groupInfo = function groupInfo(data, index) {
-  console.log(data.servers[index].channels);
-  var channelList = document.querySelector('.group-info-channels-list'),
+var groupInfo = function groupInfo(state) {
+  var data = state.data;
+  var index = state.currentGroup;
+  var prevChannels = document.querySelectorAll('.group-info-channels-list-item'),
+      channelList = document.querySelector('.group-info-channels-list'),
       channelCount = document.querySelector('#channel-count');
   channelCount.textContent = data.servers[index].channels.length;
+  prevChannels.forEach(function (item) {
+    item.remove();
+  });
   data.servers[index].channels.forEach(function (item, i) {
     var channelListItem = document.createElement('div'),
         span = document.createElement('span');
@@ -67,9 +120,13 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-var groupList = function groupList(data) {
-  var groupList = document.querySelector('.group-list');
-  data.servers.forEach(function (item, i) {
+var groupList = function groupList(state) {
+  var prevElemets = document.querySelectorAll('.group-list-icon'),
+      groupList = document.querySelector('.group-list');
+  prevElemets.forEach(function (item) {
+    item.remove();
+  });
+  state.data.servers.forEach(function (item, i) {
     var groupListItem = document.createElement("div"),
         icon = document.createElement('img');
     icon.setAttribute('src', item.serverpic);
@@ -81,6 +138,23 @@ var groupList = function groupList(data) {
 };
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (groupList);
+
+/***/ }),
+
+/***/ "./src/js/components/messages.js":
+/*!***************************************!*\
+  !*** ./src/js/components/messages.js ***!
+  \***************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+var messages = function messages(channel) {};
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (messages);
 
 /***/ }),
 
@@ -3922,6 +3996,38 @@ $({ target: 'Array', proto: true, arity: 1, forced: FORCED }, {
 
 /***/ }),
 
+/***/ "./node_modules/core-js/modules/es.array.find-index.js":
+/*!*************************************************************!*\
+  !*** ./node_modules/core-js/modules/es.array.find-index.js ***!
+  \*************************************************************/
+/***/ ((__unused_webpack_module, __unused_webpack_exports, __webpack_require__) => {
+
+"use strict";
+
+var $ = __webpack_require__(/*! ../internals/export */ "./node_modules/core-js/internals/export.js");
+var $findIndex = (__webpack_require__(/*! ../internals/array-iteration */ "./node_modules/core-js/internals/array-iteration.js").findIndex);
+var addToUnscopables = __webpack_require__(/*! ../internals/add-to-unscopables */ "./node_modules/core-js/internals/add-to-unscopables.js");
+
+var FIND_INDEX = 'findIndex';
+var SKIPS_HOLES = true;
+
+// Shouldn't skip holes
+if (FIND_INDEX in []) Array(1)[FIND_INDEX](function () { SKIPS_HOLES = false; });
+
+// `Array.prototype.findIndex` method
+// https://tc39.es/ecma262/#sec-array.prototype.findindex
+$({ target: 'Array', proto: true, forced: SKIPS_HOLES }, {
+  findIndex: function findIndex(callbackfn /* , that = undefined */) {
+    return $findIndex(this, callbackfn, arguments.length > 1 ? arguments[1] : undefined);
+  }
+});
+
+// https://tc39.es/ecma262/#sec-array.prototype-@@unscopables
+addToUnscopables(FIND_INDEX);
+
+
+/***/ }),
+
 /***/ "./node_modules/core-js/modules/es.array.for-each.js":
 /*!***********************************************************!*\
   !*** ./node_modules/core-js/modules/es.array.for-each.js ***!
@@ -5550,20 +5656,41 @@ var __webpack_exports__ = {};
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _components_group_list__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./components/group-list */ "./src/js/components/group-list.js");
 /* harmony import */ var _components_group_info__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./components/group-info */ "./src/js/components/group-info.js");
-/* harmony import */ var _services_GetService__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./services/GetService */ "./src/js/services/GetService.js");
+/* harmony import */ var _components_messages__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./components/messages */ "./src/js/components/messages.js");
+/* harmony import */ var _components_changeState__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./components/changeState */ "./src/js/components/changeState.js");
+/* harmony import */ var _services_GetService__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./services/GetService */ "./src/js/services/GetService.js");
+
+
 
 
 
 window.addEventListener('DOMContentLoaded', function () {
-  var currentGroup = 0;
-  var getService = new _services_GetService__WEBPACK_IMPORTED_MODULE_2__["default"]();
+  var state = {
+    currentGroup: 0,
+    currentChannel: 0,
+    data: {}
+  };
+
+  var changeStates = function changeStates(key, value) {
+    state[key] = value;
+    getService.getResource('/quadath').then(function (res) {
+      state.data = res;
+      update();
+    });
+    console.log(state);
+  };
+
+  var getService = new _services_GetService__WEBPACK_IMPORTED_MODULE_4__["default"]();
   getService.getResource('/quadath').then(function (res) {
-    return update(res);
+    state.data = res;
+    update();
   });
 
-  function update(data) {
-    (0,_components_group_list__WEBPACK_IMPORTED_MODULE_0__["default"])(data);
-    (0,_components_group_info__WEBPACK_IMPORTED_MODULE_1__["default"])(data, currentGroup);
+  function update() {
+    (0,_components_group_list__WEBPACK_IMPORTED_MODULE_0__["default"])(state);
+    (0,_components_group_info__WEBPACK_IMPORTED_MODULE_1__["default"])(state);
+    (0,_components_messages__WEBPACK_IMPORTED_MODULE_2__["default"])();
+    (0,_components_changeState__WEBPACK_IMPORTED_MODULE_3__["default"])(state, changeStates);
   }
 });
 })();

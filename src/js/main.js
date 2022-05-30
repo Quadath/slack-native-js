@@ -1,17 +1,43 @@
 import groupList from "./components/group-list";
 import groupInfo from "./components/group-info";
+import messages from "./components/messages";
+
+import changeState from './components/changeState'
 import GetService from "./services/GetService";
 
-window.addEventListener('DOMContentLoaded', () =>{
-    let currentGroup = 0;
+window.addEventListener('DOMContentLoaded', () => {
+    let state = {
+        currentGroup: 0,
+        currentChannel: 0,
+        data: {
+
+        }
+    }
+
+    const changeStates = (key, value) => {
+        state[key] = value;
+
+        getService.getResource('/quadath')
+            .then(res => {
+                state.data = res;
+                update();
+            });
+        console.log(state);
+    }
 
     const getService = new GetService();
     getService.getResource('/quadath')
-        .then(res => update(res));
+        .then(res => {
+            state.data = res;
+            update();
+        });
 
-    function update(data) {
-        groupList(data);
-        groupInfo(data, currentGroup);
+    function update() {
+        groupList(state);
+        groupInfo(state);
+        messages();
+
+        changeState(state, changeStates);
     }
 
 });

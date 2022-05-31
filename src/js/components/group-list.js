@@ -1,5 +1,3 @@
-import GetService from "../services/GetService";
-
 const groupList = (state) => {
     const prevElemets = document.querySelectorAll('.group-list-icon'),
         groupList = document.querySelector('.group-list')

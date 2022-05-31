@@ -76,7 +76,16 @@ gulp.task('scripts', function () {
                         debug: true,
                         corejs: 3,
                         useBuiltIns: "usage"
-                    }]]
+                    }]],
+                    plugins: [
+                        [
+                            '@babel/plugin-transform-modules-commonjs',
+                            {
+                                loose: true,
+                                strictMode: false,
+                            },
+                        ]
+                    ]
                   }
                 }
               }

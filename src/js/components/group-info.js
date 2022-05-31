@@ -1,8 +1,7 @@
 const groupInfo = (state) => {
     const data = state.data;
     const index = state.currentGroup;
-
-    const prevChannels = document.querySelectorAll('.group-info-channels-list-item'),
+        const prevChannels = document.querySelectorAll('.group-info-channels-list-item'),
         channelList = document.querySelector('.group-info-channels-list'),
         channelCount = document.querySelector('#channel-count');
 

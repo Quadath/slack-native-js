@@ -6,11 +6,17 @@ import changeState from './components/changeState'
 import GetService from "./services/GetService";
 
 window.addEventListener('DOMContentLoaded', () => {
-    let state = {
+    const state = {
         currentGroup: 0,
         currentChannel: 0,
         data: {
 
+        },
+        getCurrentGroup() {
+            return this.data.servers[this.currentGroup];
+        },
+        getCurrentChannel() {
+            return this.getCurrentGroup().channels[this.currentChannel];
         }
     }
 
@@ -35,7 +41,7 @@ window.addEventListener('DOMContentLoaded', () => {
     function update() {
         groupList(state);
         groupInfo(state);
-        messages();
+        messages(state);
 
         changeState(state, changeStates);
     }

@@ -1,7 +1,9 @@
 const messages = (state) => {
     const messageList = document.querySelector('.group-dialogue-messages-list');
 
-    state.getCurrentChannel().messages.forEach((item, index) => {
+    messageList.innerHTML = '';
+
+    state.getCurrentChannel().messages.forEach(item => {
         const message = document.createElement('div'),
             profilepic = document.createElement('img'),
             name = document.createElement('span'),

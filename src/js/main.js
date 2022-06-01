@@ -1,5 +1,6 @@
 import groupList from "./components/group-list";
 import groupInfo from "./components/group-info";
+import dialogueWindow from "./components/dialogue-window";
 import messages from "./components/messages";
 
 import changeState from './components/changeState'
@@ -41,7 +42,9 @@ window.addEventListener('DOMContentLoaded', () => {
     function update() {
         groupList(state);
         groupInfo(state);
+        dialogueWindow(state);
         messages(state);
+        
 
         changeState(state, changeStates);
     }

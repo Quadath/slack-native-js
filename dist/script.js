@@ -40,6 +40,28 @@ exports["default"] = _default;
 
 /***/ }),
 
+/***/ "./src/js/components/dialogue-window.js":
+/*!**********************************************!*\
+  !*** ./src/js/components/dialogue-window.js ***!
+  \**********************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+exports.__esModule = true;
+exports["default"] = void 0;
+
+__webpack_require__(/*! core-js/modules/es.function.name.js */ "./node_modules/core-js/modules/es.function.name.js");
+
+var dialogueWindow = function dialogueWindow(state) {
+  var groupName = document.querySelector('.group-dialogue-title'),
+      searchInput = document.querySelector('.group-dialogue-header input');
+  groupName.textContent = "#" + state.getCurrentChannel().name;
+};
+
+var _default = dialogueWindow;
+exports["default"] = _default;
+
+/***/ }),
+
 /***/ "./src/js/components/group-info.js":
 /*!*****************************************!*\
   !*** ./src/js/components/group-info.js ***!
@@ -138,7 +160,8 @@ __webpack_require__(/*! core-js/modules/es.function.name.js */ "./node_modules/c
 
 var messages = function messages(state) {
   var messageList = document.querySelector('.group-dialogue-messages-list');
-  state.getCurrentChannel().messages.forEach(function (item, index) {
+  messageList.innerHTML = '';
+  state.getCurrentChannel().messages.forEach(function (item) {
     var message = document.createElement('div'),
         profilepic = document.createElement('img'),
         name = document.createElement('span'),
@@ -5605,6 +5628,8 @@ var _groupList = _interopRequireDefault(__webpack_require__(/*! ./components/gro
 
 var _groupInfo = _interopRequireDefault(__webpack_require__(/*! ./components/group-info */ "./src/js/components/group-info.js"));
 
+var _dialogueWindow = _interopRequireDefault(__webpack_require__(/*! ./components/dialogue-window */ "./src/js/components/dialogue-window.js"));
+
 var _messages = _interopRequireDefault(__webpack_require__(/*! ./components/messages */ "./src/js/components/messages.js"));
 
 var _changeState = _interopRequireDefault(__webpack_require__(/*! ./components/changeState */ "./src/js/components/changeState.js"));
@@ -5644,6 +5669,7 @@ window.addEventListener('DOMContentLoaded', function () {
   function update() {
     (0, _groupList["default"])(state);
     (0, _groupInfo["default"])(state);
+    (0, _dialogueWindow["default"])(state);
     (0, _messages["default"])(state);
     (0, _changeState["default"])(state, changeStates);
   }

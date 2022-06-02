@@ -14,7 +14,7 @@
                                     "name": "Jeshua Stout",
                                     "profile-pic": "../img/users/004.png"
                                 },
-                                "time": "6:38 PM",
+                                "time": "1654040024338",
                                 "text": "@pierrhack I did for 6 days in Iceland" 
                             },
                             {
@@ -22,8 +22,16 @@
                                     "name": "Some",
                                     "profile-pic": "../img/users/003.png"
                                 },
-                                "time": "6:38 PM",
+                                "time": "1654040124338",
                                 "text": "Wow" 
+                            },
+                            {
+                                "order": {
+                                    "name": "Carmen Velasco",
+                                    "profile-pic": "../img/users/002.png"
+                                },
+                                "time": "1654154916545",
+                                "text": "Hi" 
                             }
                         ]
                     },
@@ -35,7 +43,7 @@
                                     "name": "Orlando Diggs",
                                     "profile-pic": "../img/users/001.png"
                                 },
-                                "time": "6:35 PM",
+                                "time": "1654152024338",
                                 "text": "What this channel does?" 
                             }
                         ]

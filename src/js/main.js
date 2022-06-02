@@ -10,6 +10,7 @@ window.addEventListener('DOMContentLoaded', () => {
     const state = {
         currentGroup: 0,
         currentChannel: 0,
+        searchQuery: '',
         data: {
 
         },
@@ -21,14 +22,9 @@ window.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    const changeStates = (key, value) => {
+    const setState = (key, value) => {
         state[key] = value;
-
-        getService.getResource('/quadath')
-            .then(res => {
-                state.data = res;
-                update();
-            });
+        update();
         console.log(state);
     }
 
@@ -46,7 +42,7 @@ window.addEventListener('DOMContentLoaded', () => {
         messages(state);
         
 
-        changeState(state, changeStates);
+        changeState(state, setState);
     }
 
 });

@@ -22,16 +22,19 @@ __webpack_require__(/*! core-js/modules/es.function.name.js */ "./node_modules/c
 
 __webpack_require__(/*! core-js/modules/es.array.slice.js */ "./node_modules/core-js/modules/es.array.slice.js");
 
-var changeState = function changeState(state, _changeState) {
-  var channels = document.querySelectorAll('.group-info-channels-list-item span');
+var changeState = function changeState(state, setState) {
+  var channels = document.querySelectorAll('.group-info-channels-list-item span'),
+      searchInput = document.querySelector('.group-dialogue-header input');
   channels.forEach(function (item) {
     item.addEventListener('click', function () {
       var index = state.getCurrentGroup().channels.findIndex(function (chan) {
         return chan.name == item.childNodes[0].textContent.slice(2);
       });
-
-      _changeState('currentChannel', index);
+      setState('currentChannel', index);
     });
+  });
+  searchInput.addEventListener('input', function () {
+    setState('searchQuery', searchInput.value);
   });
 };
 
@@ -156,39 +159,74 @@ __webpack_require__(/*! core-js/modules/es.object.to-string.js */ "./node_module
 
 __webpack_require__(/*! core-js/modules/web.dom-collections.for-each.js */ "./node_modules/core-js/modules/web.dom-collections.for-each.js");
 
+__webpack_require__(/*! core-js/modules/es.array.includes.js */ "./node_modules/core-js/modules/es.array.includes.js");
+
+__webpack_require__(/*! core-js/modules/es.string.includes.js */ "./node_modules/core-js/modules/es.string.includes.js");
+
 __webpack_require__(/*! core-js/modules/es.function.name.js */ "./node_modules/core-js/modules/es.function.name.js");
+
+__webpack_require__(/*! core-js/modules/es.date.to-string.js */ "./node_modules/core-js/modules/es.date.to-string.js");
+
+__webpack_require__(/*! core-js/modules/es.array.concat.js */ "./node_modules/core-js/modules/es.array.concat.js");
 
 var messages = function messages(state) {
   var messageList = document.querySelector('.group-dialogue-messages-list');
   messageList.innerHTML = '';
   state.getCurrentChannel().messages.forEach(function (item) {
-    var message = document.createElement('div'),
-        profilepic = document.createElement('img'),
-        name = document.createElement('span'),
-        time = document.createElement('span'),
-        text = document.createElement('span'),
-        wrapperFlDc = document.createElement('div'),
-        nameWrapper = document.createElement('div'),
-        textWrapper = document.createElement('div');
-    profilepic.setAttribute('src', item.order['profile-pic']);
-    name.textContent = item.order.name;
-    name.classList.add('name');
-    time.textContent = item.time;
-    time.classList.add('time');
-    text.textContent = item.text;
-    text.classList.add('text');
-    nameWrapper.append(name);
-    nameWrapper.append(time);
-    textWrapper.append(text);
-    wrapperFlDc.classList.add('fl-dc');
-    wrapperFlDc.append(nameWrapper);
-    wrapperFlDc.append(textWrapper);
-    message.append(profilepic);
-    message.append(wrapperFlDc);
-    message.classList.add('group-dialogue-messages-list-item');
-    messageList.append(message);
+    if (item.text.includes(state.searchQuery)) {
+      var message = document.createElement('div'),
+          profilepic = document.createElement('img'),
+          name = document.createElement('span'),
+          time = document.createElement('span'),
+          text = document.createElement('span'),
+          wrapperFlDc = document.createElement('div'),
+          nameWrapper = document.createElement('div'),
+          textWrapper = document.createElement('div');
+      profilepic.setAttribute('src', item.order['profile-pic']);
+      name.textContent = item.order.name;
+      name.classList.add('name');
+      time.textContent = convertTime(item.time);
+      time.classList.add('time');
+      text.textContent = item.text;
+      text.classList.add('text');
+      nameWrapper.append(name);
+      nameWrapper.append(time);
+      textWrapper.append(text);
+      wrapperFlDc.classList.add('fl-dc');
+      wrapperFlDc.append(nameWrapper);
+      wrapperFlDc.append(textWrapper);
+      message.append(profilepic);
+      message.append(wrapperFlDc);
+      message.classList.add('group-dialogue-messages-list-item');
+      messageList.append(message);
+    }
   });
 };
+
+function convertTime(ms) {
+  var monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+  var timeString = '';
+  var time = new Date();
+  var currentMs = time.getTime();
+  time.setTime(ms);
+  var month = monthNames[time.getMonth()],
+      days = addZero(time.getDay());
+  hours = addZero(time.getHours()), minutes = addZero(time.getMinutes());
+
+  if (currentMs - ms < 86400000) {
+    timeString = " ".concat(hours, ":").concat(minutes);
+  } else {
+    timeString = " ".concat(month, " ").concat(days, ", ").concat(hours, ":").concat(minutes);
+  }
+
+  return timeString;
+}
+
+function addZero(num) {
+  if (num < 10) {
+    return "0".concat(num);
+  } else return num;
+}
 
 var _default = messages;
 exports["default"] = _default;
@@ -870,6 +908,31 @@ module.exports = function (target, source, exceptions) {
       defineProperty(target, key, getOwnPropertyDescriptor(source, key));
     }
   }
+};
+
+
+/***/ }),
+
+/***/ "./node_modules/core-js/internals/correct-is-regexp-logic.js":
+/*!*******************************************************************!*\
+  !*** ./node_modules/core-js/internals/correct-is-regexp-logic.js ***!
+  \*******************************************************************/
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+var wellKnownSymbol = __webpack_require__(/*! ../internals/well-known-symbol */ "./node_modules/core-js/internals/well-known-symbol.js");
+
+var MATCH = wellKnownSymbol('match');
+
+module.exports = function (METHOD_NAME) {
+  var regexp = /./;
+  try {
+    '/./'[METHOD_NAME](regexp);
+  } catch (error1) {
+    try {
+      regexp[MATCH] = false;
+      return '/./'[METHOD_NAME](regexp);
+    } catch (error2) { /* empty */ }
+  } return false;
 };
 
 
@@ -2100,6 +2163,28 @@ module.exports = false;
 
 /***/ }),
 
+/***/ "./node_modules/core-js/internals/is-regexp.js":
+/*!*****************************************************!*\
+  !*** ./node_modules/core-js/internals/is-regexp.js ***!
+  \*****************************************************/
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+var isObject = __webpack_require__(/*! ../internals/is-object */ "./node_modules/core-js/internals/is-object.js");
+var classof = __webpack_require__(/*! ../internals/classof-raw */ "./node_modules/core-js/internals/classof-raw.js");
+var wellKnownSymbol = __webpack_require__(/*! ../internals/well-known-symbol */ "./node_modules/core-js/internals/well-known-symbol.js");
+
+var MATCH = wellKnownSymbol('match');
+
+// `IsRegExp` abstract operation
+// https://tc39.es/ecma262/#sec-isregexp
+module.exports = function (it) {
+  var isRegExp;
+  return isObject(it) && ((isRegExp = it[MATCH]) !== undefined ? !!isRegExp : classof(it) == 'RegExp');
+};
+
+
+/***/ }),
+
 /***/ "./node_modules/core-js/internals/is-symbol.js":
 /*!*****************************************************!*\
   !*** ./node_modules/core-js/internals/is-symbol.js ***!
@@ -2572,6 +2657,26 @@ var PromiseCapability = function (C) {
 // https://tc39.es/ecma262/#sec-newpromisecapability
 module.exports.f = function (C) {
   return new PromiseCapability(C);
+};
+
+
+/***/ }),
+
+/***/ "./node_modules/core-js/internals/not-a-regexp.js":
+/*!********************************************************!*\
+  !*** ./node_modules/core-js/internals/not-a-regexp.js ***!
+  \********************************************************/
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+var global = __webpack_require__(/*! ../internals/global */ "./node_modules/core-js/internals/global.js");
+var isRegExp = __webpack_require__(/*! ../internals/is-regexp */ "./node_modules/core-js/internals/is-regexp.js");
+
+var TypeError = global.TypeError;
+
+module.exports = function (it) {
+  if (isRegExp(it)) {
+    throw TypeError("The method doesn't accept regular expressions");
+  } return it;
 };
 
 
@@ -4061,6 +4166,38 @@ $({ target: 'Array', proto: true, forced: [].forEach != forEach }, {
 
 /***/ }),
 
+/***/ "./node_modules/core-js/modules/es.array.includes.js":
+/*!***********************************************************!*\
+  !*** ./node_modules/core-js/modules/es.array.includes.js ***!
+  \***********************************************************/
+/***/ ((__unused_webpack_module, __unused_webpack_exports, __webpack_require__) => {
+
+"use strict";
+
+var $ = __webpack_require__(/*! ../internals/export */ "./node_modules/core-js/internals/export.js");
+var $includes = (__webpack_require__(/*! ../internals/array-includes */ "./node_modules/core-js/internals/array-includes.js").includes);
+var fails = __webpack_require__(/*! ../internals/fails */ "./node_modules/core-js/internals/fails.js");
+var addToUnscopables = __webpack_require__(/*! ../internals/add-to-unscopables */ "./node_modules/core-js/internals/add-to-unscopables.js");
+
+// FF99+ bug
+var BROKEN_ON_SPARSE = fails(function () {
+  return !Array(1).includes();
+});
+
+// `Array.prototype.includes` method
+// https://tc39.es/ecma262/#sec-array.prototype.includes
+$({ target: 'Array', proto: true, forced: BROKEN_ON_SPARSE }, {
+  includes: function includes(el /* , fromIndex = 0 */) {
+    return $includes(this, el, arguments.length > 1 ? arguments[1] : undefined);
+  }
+});
+
+// https://tc39.es/ecma262/#sec-array.prototype-@@unscopables
+addToUnscopables('includes');
+
+
+/***/ }),
+
 /***/ "./node_modules/core-js/modules/es.array.iterator.js":
 /*!***********************************************************!*\
   !*** ./node_modules/core-js/modules/es.array.iterator.js ***!
@@ -4220,6 +4357,35 @@ $({ target: 'Array', proto: true, forced: !HAS_SPECIES_SUPPORT }, {
     return result;
   }
 });
+
+
+/***/ }),
+
+/***/ "./node_modules/core-js/modules/es.date.to-string.js":
+/*!***********************************************************!*\
+  !*** ./node_modules/core-js/modules/es.date.to-string.js ***!
+  \***********************************************************/
+/***/ ((__unused_webpack_module, __unused_webpack_exports, __webpack_require__) => {
+
+// TODO: Remove from `core-js@4`
+var uncurryThis = __webpack_require__(/*! ../internals/function-uncurry-this */ "./node_modules/core-js/internals/function-uncurry-this.js");
+var defineBuiltIn = __webpack_require__(/*! ../internals/define-built-in */ "./node_modules/core-js/internals/define-built-in.js");
+
+var DatePrototype = Date.prototype;
+var INVALID_DATE = 'Invalid Date';
+var TO_STRING = 'toString';
+var un$DateToString = uncurryThis(DatePrototype[TO_STRING]);
+var getTime = uncurryThis(DatePrototype.getTime);
+
+// `Date.prototype.toString` method
+// https://tc39.es/ecma262/#sec-date.prototype.tostring
+if (String(new Date(NaN)) != INVALID_DATE) {
+  defineBuiltIn(DatePrototype, TO_STRING, function toString() {
+    var value = getTime(this);
+    // eslint-disable-next-line no-self-compare -- NaN check
+    return value === value ? un$DateToString(this) : INVALID_DATE;
+  });
+}
 
 
 /***/ }),
@@ -4998,6 +5164,38 @@ $({ target: 'Promise', stat: true, forced: IS_PURE || FORCED_PROMISE_CONSTRUCTOR
 
 /***/ }),
 
+/***/ "./node_modules/core-js/modules/es.string.includes.js":
+/*!************************************************************!*\
+  !*** ./node_modules/core-js/modules/es.string.includes.js ***!
+  \************************************************************/
+/***/ ((__unused_webpack_module, __unused_webpack_exports, __webpack_require__) => {
+
+"use strict";
+
+var $ = __webpack_require__(/*! ../internals/export */ "./node_modules/core-js/internals/export.js");
+var uncurryThis = __webpack_require__(/*! ../internals/function-uncurry-this */ "./node_modules/core-js/internals/function-uncurry-this.js");
+var notARegExp = __webpack_require__(/*! ../internals/not-a-regexp */ "./node_modules/core-js/internals/not-a-regexp.js");
+var requireObjectCoercible = __webpack_require__(/*! ../internals/require-object-coercible */ "./node_modules/core-js/internals/require-object-coercible.js");
+var toString = __webpack_require__(/*! ../internals/to-string */ "./node_modules/core-js/internals/to-string.js");
+var correctIsRegExpLogic = __webpack_require__(/*! ../internals/correct-is-regexp-logic */ "./node_modules/core-js/internals/correct-is-regexp-logic.js");
+
+var stringIndexOf = uncurryThis(''.indexOf);
+
+// `String.prototype.includes` method
+// https://tc39.es/ecma262/#sec-string.prototype.includes
+$({ target: 'String', proto: true, forced: !correctIsRegExpLogic('includes') }, {
+  includes: function includes(searchString /* , position = 0 */) {
+    return !!~stringIndexOf(
+      toString(requireObjectCoercible(this)),
+      toString(notARegExp(searchString)),
+      arguments.length > 1 ? arguments[1] : undefined
+    );
+  }
+});
+
+
+/***/ }),
+
 /***/ "./node_modules/core-js/modules/es.string.iterator.js":
 /*!************************************************************!*\
   !*** ./node_modules/core-js/modules/es.string.iterator.js ***!
@@ -5642,6 +5840,7 @@ window.addEventListener('DOMContentLoaded', function () {
   var state = {
     currentGroup: 0,
     currentChannel: 0,
+    searchQuery: '',
     data: {},
     getCurrentGroup: function getCurrentGroup() {
       return this.data.servers[this.currentGroup];
@@ -5651,12 +5850,9 @@ window.addEventListener('DOMContentLoaded', function () {
     }
   };
 
-  var changeStates = function changeStates(key, value) {
+  var setState = function setState(key, value) {
     state[key] = value;
-    getService.getResource('/quadath').then(function (res) {
-      state.data = res;
-      update();
-    });
+    update();
     console.log(state);
   };
 
@@ -5671,7 +5867,7 @@ window.addEventListener('DOMContentLoaded', function () {
     (0, _groupInfo["default"])(state);
     (0, _dialogueWindow["default"])(state);
     (0, _messages["default"])(state);
-    (0, _changeState["default"])(state, changeStates);
+    (0, _changeState["default"])(state, setState);
   }
 });
 })();

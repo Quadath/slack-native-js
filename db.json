@@ -19,7 +19,7 @@
                             },
                             {
                                 "order": {
-                                    "name": "Some",
+                                    "name": "Marie Jensen",
                                     "profile-pic": "../img/users/003.png"
                                 },
                                 "time": "1654040124338",
@@ -40,11 +40,27 @@
                         "messages": [
                             {
                                 "order": {
+                                    "name": "Jeshua Stout",
+                                    "profile-pic": "../img/users/004.png"
+                                },
+                                "time": "1653752024338",
+                                "text": "b" 
+                            },
+                            {
+                                "order": {
                                     "name": "Orlando Diggs",
                                     "profile-pic": "../img/users/001.png"
                                 },
-                                "time": "1654152024338",
+                                "time": "1653952024338",
                                 "text": "What this channel does?" 
+                            },
+                            {
+                                "order": {
+                                    "name": "Carmen Velasco",
+                                    "profile-pic": "../img/users/002.png"
+                                },
+                                "time": "1654052024338",
+                                "text": "idk" 
                             }
                         ]
                     }

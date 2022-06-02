@@ -153,6 +153,8 @@ exports["default"] = _default;
 exports.__esModule = true;
 exports["default"] = void 0;
 
+__webpack_require__(/*! core-js/modules/es.date.to-string.js */ "./node_modules/core-js/modules/es.date.to-string.js");
+
 __webpack_require__(/*! core-js/modules/es.array.for-each.js */ "./node_modules/core-js/modules/es.array.for-each.js");
 
 __webpack_require__(/*! core-js/modules/es.object.to-string.js */ "./node_modules/core-js/modules/es.object.to-string.js");
@@ -165,11 +167,10 @@ __webpack_require__(/*! core-js/modules/es.string.includes.js */ "./node_modules
 
 __webpack_require__(/*! core-js/modules/es.function.name.js */ "./node_modules/core-js/modules/es.function.name.js");
 
-__webpack_require__(/*! core-js/modules/es.date.to-string.js */ "./node_modules/core-js/modules/es.date.to-string.js");
-
 __webpack_require__(/*! core-js/modules/es.array.concat.js */ "./node_modules/core-js/modules/es.array.concat.js");
 
 var messages = function messages(state) {
+  var prevTime = new Date();
   var messageList = document.querySelector('.group-dialogue-messages-list');
   messageList.innerHTML = '';
   state.getCurrentChannel().messages.forEach(function (item) {
@@ -201,32 +202,47 @@ var messages = function messages(state) {
       messageList.append(message);
     }
   });
-};
 
-function convertTime(ms) {
-  var monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-  var timeString = '';
-  var time = new Date();
-  var currentMs = time.getTime();
-  time.setTime(ms);
-  var month = monthNames[time.getMonth()],
-      days = addZero(time.getDay());
-  hours = addZero(time.getHours()), minutes = addZero(time.getMinutes());
+  function convertTime(ms) {
+    var monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+    var timeString = '';
+    var time = new Date();
+    var current = time,
+        currentMs = current.getTime();
+    time.setTime(ms);
+    var month = monthNames[time.getMonth()],
+        days = addZero(time.getDay());
+    hours = addZero(time.getHours()), minutes = addZero(time.getMinutes());
 
-  if (currentMs - ms < 86400000) {
-    timeString = " ".concat(hours, ":").concat(minutes);
-  } else {
-    timeString = " ".concat(month, " ").concat(days, ", ").concat(hours, ":").concat(minutes);
+    if (time.getTime() - prevTime.getTime() > 86400000) {
+      messageList.append(Divider("".concat(month, " ").concat(days)));
+    }
+
+    if (currentMs - ms < 86400000) {
+      timeString = " ".concat(hours, ":").concat(minutes);
+    } else {
+      timeString = " ".concat(month, " ").concat(days, ", ").concat(hours, ":").concat(minutes);
+    }
+
+    prevTime.setTime(time.getTime());
+    return timeString;
   }
 
-  return timeString;
-}
+  function Divider(text) {
+    var divider = document.createElement('div'),
+        textField = document.createElement('div');
+    divider.append(textField);
+    textField.textContent = text;
+    divider.classList.add('group-dialogue-messages-list-divider');
+    return divider;
+  }
 
-function addZero(num) {
-  if (num < 10) {
-    return "0".concat(num);
-  } else return num;
-}
+  function addZero(num) {
+    if (num < 10) {
+      return "0".concat(num);
+    } else return num;
+  }
+};
 
 var _default = messages;
 exports["default"] = _default;

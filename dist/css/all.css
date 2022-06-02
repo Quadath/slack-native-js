@@ -87,6 +87,9 @@
   border: 1px solid #bbbbbbb;
   padding: 0 16px;
 }
+.group-dialogue-header #star-channel {
+  margin-left: 5px;
+}
 .group-dialogue-header #bell-channel {
   margin-left: 18px;
 }

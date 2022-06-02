@@ -1,4 +1,6 @@
 const messages = (state) => {
+    let prevTime = new Date();
+
     const messageList = document.querySelector('.group-dialogue-messages-list');
 
     messageList.innerHTML = '';
@@ -39,36 +41,50 @@ const messages = (state) => {
 
     })
 
-}
-function convertTime(ms) {
-    const monthNames = ["January", "February", "March", "April", "May", "June",
-  "July", "August", "September", "October", "November", "December"];
-
-    let timeString = '';
-    const time = new Date();
-    const currentMs = time.getTime();
-    time.setTime(ms);
-
-    const month = monthNames[time.getMonth()],
-        days = addZero(time.getDay());
-        hours = addZero(time.getHours()),
-        minutes = addZero(time.getMinutes());
-
-    if (currentMs - ms < 86400000) {
-        timeString = ` ${hours}:${minutes}`;
+    
+    function convertTime(ms) {
+        const monthNames = ["January", "February", "March", "April", "May", "June",
+      "July", "August", "September", "October", "November", "December"];
+    
+        let timeString = '';
+        const time = new Date();
+        const current = time,
+        currentMs = current.getTime();
+        time.setTime(ms);
+    
+        const month = monthNames[time.getMonth()],
+            days = addZero(time.getDay());
+            hours = addZero(time.getHours()),
+            minutes = addZero(time.getMinutes());
+        if(time.getTime() - prevTime.getTime() > 86400000) {
+            messageList.append(Divider(`${month} ${days}`));
+        }
+        if (currentMs - ms < 86400000) {
+            timeString = ` ${hours}:${minutes}`;
+        }
+        else {
+            timeString = ` ${month} ${days}, ${hours}:${minutes}`
+        }
+        prevTime.setTime(time.getTime());
+        return timeString;
     }
-    else {
-        timeString = ` ${month} ${days}, ${hours}:${minutes}`
+    function Divider(text) {
+        const divider = document.createElement('div'),
+            textField = document.createElement('div');
+        
+        divider.append(textField);
+        textField.textContent = text;
+        divider.classList.add('group-dialogue-messages-list-divider');
+    
+        return divider;
     }
-
-    return timeString;
-}
-
-function addZero(num) {
-    if (num < 10) {
-        return `0${num}`;
+    
+    function addZero(num) {
+        if (num < 10) {
+            return `0${num}`;
+        }
+        else return num;
     }
-    else return num;
 }
 
 export default messages;

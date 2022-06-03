@@ -8,17 +8,17 @@ import GetService from "./services/GetService";
 
 window.addEventListener('DOMContentLoaded', () => {
     const state = {
-        currentGroup: 0,
+        currentServer: 0,
         currentChannel: 0,
         searchQuery: '',
         data: {
 
         },
-        getCurrentGroup() {
-            return this.data.servers[this.currentGroup];
+        getCurrentServer() {
+            return this.data.servers[this.currentServer];
         },
         getCurrentChannel() {
-            return this.getCurrentGroup().channels[this.currentChannel];
+            return this.getCurrentServer().channels[this.currentChannel];
         }
     }
 

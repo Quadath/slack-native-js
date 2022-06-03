@@ -16,7 +16,7 @@ const messages = (state) => {
                 nameWrapper = document.createElement('div'),
                 textWrapper = document.createElement('div');
     
-            profilepic.setAttribute('src', item.order['profile-pic']);
+            profilepic.setAttribute('src', item.order['profilepic']);
             name.textContent = item.order.name;
             name.classList.add('name');
             time.textContent = convertTime(item.time);

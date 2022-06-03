@@ -5,6 +5,7 @@
   height: 100vh;
 }
 .group-dialogue-messages {
+  overflow-y: scroll;
   margin: 32px 22px 0;
 }
 .group-dialogue-messages-list-item {
@@ -180,6 +181,11 @@
   font-size: 14px;
   line-height: 17px;
   font-weight: 700;
+}
+.group-info-channels-list-item.active {
+  background-color: #aaaaaa;
+  border-radius: 5px;
+  opacity: 0.9;
 }
 .group-info-friends-title {
   display: flex;

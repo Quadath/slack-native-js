@@ -1,6 +1,6 @@
 const groupInfo = (state) => {
     const data = state.data;
-    const index = state.currentGroup;
+    const index = state.currentServer;
         const prevChannels = document.querySelectorAll('.group-info-channels-list-item'),
         channelList = document.querySelector('.group-info-channels-list'),
         channelCount = document.querySelector('#channel-count');
@@ -15,7 +15,9 @@ const groupInfo = (state) => {
         const channelListItem = document.createElement('div'),
         span = document.createElement('span');
 
-
+        if (i == state.currentChannel) {
+            channelListItem.classList.add('active');
+        }
         channelListItem.classList.add('group-info-channels-list-item');
         span.textContent = `# ${item.name}`
         channelListItem.append(span);

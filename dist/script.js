@@ -22,12 +22,15 @@ __webpack_require__(/*! core-js/modules/es.function.name.js */ "./node_modules/c
 
 __webpack_require__(/*! core-js/modules/es.array.slice.js */ "./node_modules/core-js/modules/es.array.slice.js");
 
+__webpack_require__(/*! core-js/modules/es.date.to-string.js */ "./node_modules/core-js/modules/es.date.to-string.js");
+
 var changeState = function changeState(state, setState) {
   var channels = document.querySelectorAll('.group-info-channels-list-item span'),
-      searchInput = document.querySelector('.group-dialogue-header input');
+      searchInput = document.querySelector('.group-dialogue-header input'),
+      messageInput = document.querySelector('#send-message');
   channels.forEach(function (item) {
     item.addEventListener('click', function () {
-      var index = state.getCurrentGroup().channels.findIndex(function (chan) {
+      var index = state.getCurrentServer().channels.findIndex(function (chan) {
         return chan.name == item.childNodes[0].textContent.slice(2);
       });
       setState('currentChannel', index);
@@ -35,6 +38,23 @@ var changeState = function changeState(state, setState) {
   });
   searchInput.addEventListener('input', function () {
     setState('searchQuery', searchInput.value);
+  });
+  document.addEventListener('keyup', function (e) {
+    if (e.code == 'Enter') {
+      newData = state.data;
+      var newMessage = {
+        order: {
+          name: "Quadath",
+          profilepic: "https://avatars.githubusercontent.com/u/91686101?s=96&v=4"
+        },
+        time: new Date().getTime(),
+        text: messageInput.value
+      };
+      messageInput.value = '';
+      console.log(newData.servers[state.currentChannel].channels[state.currentChannel].messages);
+      newData.servers[state.currentChannel].channels[state.currentChannel].messages.push(newMessage);
+      setState('data', newData);
+    }
   });
 };
 
@@ -84,7 +104,7 @@ __webpack_require__(/*! core-js/modules/es.function.name.js */ "./node_modules/c
 
 var groupInfo = function groupInfo(state) {
   var data = state.data;
-  var index = state.currentGroup;
+  var index = state.currentServer;
   var prevChannels = document.querySelectorAll('.group-info-channels-list-item'),
       channelList = document.querySelector('.group-info-channels-list'),
       channelCount = document.querySelector('#channel-count');
@@ -95,6 +115,11 @@ var groupInfo = function groupInfo(state) {
   data.servers[index].channels.forEach(function (item, i) {
     var channelListItem = document.createElement('div'),
         span = document.createElement('span');
+
+    if (i == state.currentChannel) {
+      channelListItem.classList.add('active');
+    }
+
     channelListItem.classList.add('group-info-channels-list-item');
     span.textContent = "# ".concat(item.name);
     channelListItem.append(span);
@@ -183,7 +208,7 @@ var messages = function messages(state) {
           wrapperFlDc = document.createElement('div'),
           nameWrapper = document.createElement('div'),
           textWrapper = document.createElement('div');
-      profilepic.setAttribute('src', item.order['profile-pic']);
+      profilepic.setAttribute('src', item.order['profilepic']);
       name.textContent = item.order.name;
       name.classList.add('name');
       time.textContent = convertTime(item.time);
@@ -5854,15 +5879,15 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "d
 
 window.addEventListener('DOMContentLoaded', function () {
   var state = {
-    currentGroup: 0,
+    currentServer: 0,
     currentChannel: 0,
     searchQuery: '',
     data: {},
-    getCurrentGroup: function getCurrentGroup() {
-      return this.data.servers[this.currentGroup];
+    getCurrentServer: function getCurrentServer() {
+      return this.data.servers[this.currentServer];
     },
     getCurrentChannel: function getCurrentChannel() {
-      return this.getCurrentGroup().channels[this.currentChannel];
+      return this.getCurrentServer().channels[this.currentChannel];
     }
   };
 

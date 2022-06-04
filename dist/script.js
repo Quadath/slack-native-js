@@ -29,6 +29,7 @@ var changeState = function changeState(state, setState) {
       searchInput = document.querySelector('.group-dialogue-header input'),
       messageInput = document.querySelector('#send-message');
   channels.forEach(function (item) {
+    console.log('called');
     item.addEventListener('click', function () {
       var index = state.getCurrentServer().channels.findIndex(function (chan) {
         return chan.name == item.childNodes[0].textContent.slice(2);
@@ -37,7 +38,7 @@ var changeState = function changeState(state, setState) {
     });
   });
   searchInput.addEventListener('input', function () {
-    setState('searchQuery', searchInput.value);
+    state.setState('searchQuery', searchInput.value);
   });
   document.addEventListener('keyup', function (e) {
     if (e.code == 'Enter') {
@@ -51,8 +52,7 @@ var changeState = function changeState(state, setState) {
         text: messageInput.value
       };
       messageInput.value = '';
-      console.log(newData.servers[state.currentChannel].channels[state.currentChannel].messages);
-      newData.servers[state.currentChannel].channels[state.currentChannel].messages.push(newMessage);
+      newData.servers[state.currentServer].channels[state.currentChannel].messages.push(newMessage);
       setState('data', newData);
     }
   });
@@ -102,6 +102,10 @@ __webpack_require__(/*! core-js/modules/web.dom-collections.for-each.js */ "./no
 
 __webpack_require__(/*! core-js/modules/es.function.name.js */ "./node_modules/core-js/modules/es.function.name.js");
 
+__webpack_require__(/*! core-js/modules/es.array.find-index.js */ "./node_modules/core-js/modules/es.array.find-index.js");
+
+__webpack_require__(/*! core-js/modules/es.array.slice.js */ "./node_modules/core-js/modules/es.array.slice.js");
+
 var groupInfo = function groupInfo(state) {
   var data = state.data;
   var index = state.currentServer;
@@ -123,6 +127,12 @@ var groupInfo = function groupInfo(state) {
     channelListItem.classList.add('group-info-channels-list-item');
     span.textContent = "# ".concat(item.name);
     channelListItem.append(span);
+    channelListItem.addEventListener('click', function () {
+      var index = state.getCurrentServer().channels.findIndex(function (chan) {
+        return chan.name == channelListItem.childNodes[0].textContent.slice(2);
+      });
+      state.setState('currentChannel', index);
+    });
     channelList.append(channelListItem);
   });
 };
@@ -5888,15 +5898,20 @@ window.addEventListener('DOMContentLoaded', function () {
     },
     getCurrentChannel: function getCurrentChannel() {
       return this.getCurrentServer().channels[this.currentChannel];
+    },
+    setState: function setState(key, value) {
+      this[key] = value;
+      update();
+      console.log(this);
     }
   };
 
   var setState = function setState(key, value) {
     state[key] = value;
     update();
-    console.log(state);
   };
 
+  (0, _changeState["default"])(state, setState);
   var getService = new _GetService["default"]();
   getService.getResource('/quadath').then(function (res) {
     state.data = res;
@@ -5908,7 +5923,6 @@ window.addEventListener('DOMContentLoaded', function () {
     (0, _groupInfo["default"])(state);
     (0, _dialogueWindow["default"])(state);
     (0, _messages["default"])(state);
-    (0, _changeState["default"])(state, setState);
   }
 });
 })();

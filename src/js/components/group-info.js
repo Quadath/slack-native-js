@@ -22,6 +22,12 @@ const groupInfo = (state) => {
         span.textContent = `# ${item.name}`
         channelListItem.append(span);
 
+        channelListItem.addEventListener('click', () => {
+            const index = state.getCurrentServer().channels.findIndex((chan) => {
+                return chan.name == channelListItem.childNodes[0].textContent.slice(2);
+            })
+            state.setState('currentChannel', index);
+        });
         channelList.append(channelListItem);
     })
 }

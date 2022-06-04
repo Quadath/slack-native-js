@@ -4,6 +4,7 @@ const changeState = (state, setState) => {
         messageInput = document.querySelector('#send-message');
     
     channels.forEach(item => {
+        console.log('called')
         item.addEventListener('click', () => {
             const index = state.getCurrentServer().channels.findIndex((chan) => {
                 return chan.name == item.childNodes[0].textContent.slice(2);
@@ -13,7 +14,7 @@ const changeState = (state, setState) => {
     });
 
     searchInput.addEventListener('input', () => {
-        setState('searchQuery', searchInput.value);
+        state.setState('searchQuery', searchInput.value);
     });
 
     document.addEventListener('keyup', (e) => {
@@ -29,8 +30,7 @@ const changeState = (state, setState) => {
                 text: messageInput.value
             }
             messageInput.value = '';
-            console.log(newData.servers[state.currentChannel].channels[state.currentChannel].messages);
-            newData.servers[state.currentChannel].channels[state.currentChannel].messages.push(newMessage);
+            newData.servers[state.currentServer].channels[state.currentChannel].messages.push(newMessage);
             setState('data', newData);
         }
     })

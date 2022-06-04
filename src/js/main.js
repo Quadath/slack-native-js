@@ -19,15 +19,20 @@ window.addEventListener('DOMContentLoaded', () => {
         },
         getCurrentChannel() {
             return this.getCurrentServer().channels[this.currentChannel];
+        },
+        setState(key, value) {
+            this[key] = value;
+            update();
+            console.log(this);
         }
     }
-
+    
     const setState = (key, value) => {
         state[key] = value;
         update();
-        console.log(state);
     }
-
+    changeState(state, setState);
+    
     const getService = new GetService();
     getService.getResource('/quadath')
         .then(res => {
@@ -40,9 +45,6 @@ window.addEventListener('DOMContentLoaded', () => {
         groupInfo(state);
         dialogueWindow(state);
         messages(state);
-        
-
-        changeState(state, setState);
     }
 
 });

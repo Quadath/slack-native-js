@@ -86,6 +86,33 @@
                     }
                 ]
             }
+        ],
+        "users": [
+            {
+                "name": "Orlando Diggs",
+                "username": "orladig",
+                "email": "orladig@gmail.com",
+                "skype": "orladig98"
+            },
+            {
+                "name": "Carmen Velasco",
+                "username": "careavel",
+                "email": "carmenvel@gmail.com",
+                "skype": "carmenvel"
+            },
+            {
+                "name": "Marie Jensen",
+                "username": "marijen",
+                "email": "marijense@gmail.com",
+                "skype": "mariej"
+            },
+            {
+                "name": "Jeshua Stout",
+                "username": "Jeshasto",
+                "email": "jeshasto@gmail.com",
+                "skype": "jeshuasto"
+            }
         ]
     }
+    
 }

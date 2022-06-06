@@ -304,6 +304,47 @@ exports["default"] = _default;
 
 /***/ }),
 
+/***/ "./src/js/components/user-info.js":
+/*!****************************************!*\
+  !*** ./src/js/components/user-info.js ***!
+  \****************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+exports.__esModule = true;
+exports["default"] = void 0;
+
+__webpack_require__(/*! core-js/modules/es.array.find.js */ "./node_modules/core-js/modules/es.array.find.js");
+
+__webpack_require__(/*! core-js/modules/es.object.to-string.js */ "./node_modules/core-js/modules/es.object.to-string.js");
+
+__webpack_require__(/*! core-js/modules/es.function.name.js */ "./node_modules/core-js/modules/es.function.name.js");
+
+var userInfo = function userInfo(state) {
+  var name = document.querySelector('.user-info-name'),
+      username = document.querySelector('.user-info-details-username'),
+      email = document.querySelector('.user-info-details-email'),
+      skype = document.querySelector('.user-info-details-skype');
+  users = state.data.users;
+
+  if (state.selectedUser) {
+    user = users.find(function (item) {
+      return item.name == state.selectedUser;
+    });
+
+    if (user) {
+      name.textContent = user.name;
+      username.textContent = "@".concat(user.username);
+      email.textContent = user.email;
+      skype.textContent = user.skype;
+    }
+  }
+};
+
+var _default = userInfo;
+exports["default"] = _default;
+
+/***/ }),
+
 /***/ "./src/js/services/GetService.js":
 /*!***************************************!*\
   !*** ./src/js/services/GetService.js ***!
@@ -4642,6 +4683,38 @@ addToUnscopables(FIND_INDEX);
 
 /***/ }),
 
+/***/ "./node_modules/core-js/modules/es.array.find.js":
+/*!*******************************************************!*\
+  !*** ./node_modules/core-js/modules/es.array.find.js ***!
+  \*******************************************************/
+/***/ ((__unused_webpack_module, __unused_webpack_exports, __webpack_require__) => {
+
+"use strict";
+
+var $ = __webpack_require__(/*! ../internals/export */ "./node_modules/core-js/internals/export.js");
+var $find = (__webpack_require__(/*! ../internals/array-iteration */ "./node_modules/core-js/internals/array-iteration.js").find);
+var addToUnscopables = __webpack_require__(/*! ../internals/add-to-unscopables */ "./node_modules/core-js/internals/add-to-unscopables.js");
+
+var FIND = 'find';
+var SKIPS_HOLES = true;
+
+// Shouldn't skip holes
+if (FIND in []) Array(1)[FIND](function () { SKIPS_HOLES = false; });
+
+// `Array.prototype.find` method
+// https://tc39.es/ecma262/#sec-array.prototype.find
+$({ target: 'Array', proto: true, forced: SKIPS_HOLES }, {
+  find: function find(callbackfn /* , that = undefined */) {
+    return $find(this, callbackfn, arguments.length > 1 ? arguments[1] : undefined);
+  }
+});
+
+// https://tc39.es/ecma262/#sec-array.prototype-@@unscopables
+addToUnscopables(FIND);
+
+
+/***/ }),
+
 /***/ "./node_modules/core-js/modules/es.array.for-each.js":
 /*!***********************************************************!*\
   !*** ./node_modules/core-js/modules/es.array.for-each.js ***!
@@ -6494,6 +6567,8 @@ var _dialogueWindow = _interopRequireDefault(__webpack_require__(/*! ./component
 
 var _messages = _interopRequireDefault(__webpack_require__(/*! ./components/messages */ "./src/js/components/messages.js"));
 
+var _userInfo = _interopRequireDefault(__webpack_require__(/*! ./components/user-info */ "./src/js/components/user-info.js"));
+
 var _changeState = _interopRequireDefault(__webpack_require__(/*! ./components/changeState */ "./src/js/components/changeState.js"));
 
 var _GetService = _interopRequireDefault(__webpack_require__(/*! ./services/GetService */ "./src/js/services/GetService.js"));
@@ -6537,6 +6612,7 @@ window.addEventListener('DOMContentLoaded', function () {
     (0, _groupInfo["default"])(state);
     (0, _dialogueWindow["default"])(state);
     (0, _messages["default"])(state);
+    (0, _userInfo["default"])(state);
   }
 });
 })();

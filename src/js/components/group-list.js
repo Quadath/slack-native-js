@@ -15,6 +15,10 @@ const groupList = (state) => {
         groupListItem.classList.add('group-list-icon');
         groupListItem.setAttribute('index', i);
         
+        groupListItem.addEventListener('click', () => {
+            state.setState('currentServer', i);
+        })
+
         groupList.append(groupListItem);
     })
   

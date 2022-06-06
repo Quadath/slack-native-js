@@ -178,6 +178,9 @@ var groupList = function groupList(state) {
     groupListItem.append(icon);
     groupListItem.classList.add('group-list-icon');
     groupListItem.setAttribute('index', i);
+    groupListItem.addEventListener('click', function () {
+      state.setState('currentServer', i);
+    });
     groupList.append(groupListItem);
   });
 };

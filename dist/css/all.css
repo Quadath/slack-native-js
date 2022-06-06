@@ -6,7 +6,7 @@
 }
 .group-dialogue-messages {
   overflow-y: scroll;
-  margin: 32px 22px 0;
+  margin: 32px 0 0 22px;
 }
 .group-dialogue-messages-list-item {
   margin-top: 10px;
@@ -297,6 +297,15 @@ body {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+  background-color: #adadad;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #5c5c5c;
 }
 .user-info {
   display: grid;

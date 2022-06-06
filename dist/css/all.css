@@ -22,6 +22,9 @@
 .group-dialogue-messages-list-item .fl-dc {
   margin-left: 12px;
 }
+.group-dialogue-messages-list-item .fl-dc.m47 {
+  margin-left: 47px;
+}
 .group-dialogue-messages-list-item .time {
   font-size: 12px;
   line-height: 14px;

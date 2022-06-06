@@ -1,5 +1,6 @@
 const messages = (state) => {
     let prevTime = new Date();
+    prevTime.setTime(0);
 
     const messageList = document.querySelector('.group-dialogue-messages-list');
 
@@ -24,21 +25,31 @@ const messages = (state) => {
             text.textContent = item.text;
             text.classList.add('text');
     
-            nameWrapper.append(name);
-            nameWrapper.append(time);
+            if (item.time - prevTime.getTime() < 60000) {
+                wrapperFlDc.classList.add('m47');
+            }
+            else {       
+                nameWrapper.append(name);
+                nameWrapper.append(time);
+                message.append(profilepic);
+            }
             textWrapper.append(text);
     
             wrapperFlDc.classList.add('fl-dc');
             wrapperFlDc.append(nameWrapper);
             wrapperFlDc.append(textWrapper);
     
-            message.append(profilepic);
             message.append(wrapperFlDc);
     
           message.classList.add('group-dialogue-messages-list-item')
           messageList.append(message);
+          prevTime.setTime(item.time);
+          message.addEventListener('click', (e) => {
+            if(e.target.className == 'name') {
+                state.setState('selectedUser', e.target.textContent);
+            }
+          })
         }
-
     })
 
     
@@ -65,7 +76,6 @@ const messages = (state) => {
         else {
             timeString = ` ${month} ${days}, ${hours}:${minutes}`
         }
-        prevTime.setTime(time.getTime());
         return timeString;
     }
     function Divider(text) {

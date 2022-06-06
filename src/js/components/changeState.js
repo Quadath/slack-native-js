@@ -1,8 +1,8 @@
-const changeState = (state, setState) => { 
+const changeState = (state) => {
     const channels = document.querySelectorAll('.group-info-channels-list-item span'),
         searchInput = document.querySelector('.group-dialogue-header input'),
         messageInput = document.querySelector('#send-message');
-    
+
     channels.forEach(item => {
         console.log('called')
         item.addEventListener('click', () => {
@@ -19,19 +19,23 @@ const changeState = (state, setState) => {
 
     document.addEventListener('keyup', (e) => {
         if (e.code == 'Enter') {
-            newData = state.data;
+            let str = messageInput.value;
 
-            const newMessage = {
-                order: {
-                    name: "Quadath",
-                    profilepic: "https://avatars.githubusercontent.com/u/91686101?s=96&v=4"
-                },
-                time: new Date().getTime(),
-                text: messageInput.value
+            if (str.replace(/\s/g, "").length > 0 && !messageInput.value == '') {
+                newData = state.data;
+
+                const newMessage = {
+                    order: {
+                        name: "Quadath",
+                        profilepic: "https://avatars.githubusercontent.com/u/91686101?s=96&v=4"
+                    },
+                    time: new Date().getTime(),
+                    text: messageInput.value
+                }
+                messageInput.value = '';
+                newData.servers[state.currentServer].channels[state.currentChannel].messages.push(newMessage);
+                state.setState('data', newData);
             }
-            messageInput.value = '';
-            newData.servers[state.currentServer].channels[state.currentChannel].messages.push(newMessage);
-            setState('data', newData);
         }
     })
 }

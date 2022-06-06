@@ -10,6 +10,7 @@ window.addEventListener('DOMContentLoaded', () => {
     const state = {
         currentServer: 0,
         currentChannel: 0,
+        selectedUser: '',
         searchQuery: '',
         data: {
 

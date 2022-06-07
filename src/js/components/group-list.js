@@ -17,6 +17,7 @@ const groupList = (state) => {
         
         groupListItem.addEventListener('click', () => {
             state.setState('currentServer', i);
+            state.setState('currentChannel', 0);
         })
 
         groupList.append(groupListItem);

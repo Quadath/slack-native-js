@@ -180,6 +180,7 @@ var groupList = function groupList(state) {
     groupListItem.setAttribute('index', i);
     groupListItem.addEventListener('click', function () {
       state.setState('currentServer', i);
+      state.setState('currentChannel', 0);
     });
     groupList.append(groupListItem);
   });

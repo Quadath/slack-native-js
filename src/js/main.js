@@ -4,6 +4,7 @@ import dialogueWindow from "./components/dialogue-window";
 import messages from "./components/messages";
 import userInfo from "./components/user-info";
 
+import settingsModal from "./components/settingsModal";
 import changeState from './components/changeState'
 import GetService from "./services/GetService";
 
@@ -20,7 +21,7 @@ window.addEventListener('DOMContentLoaded', () => {
             return this.data.servers[this.currentServer];
         },
         getCurrentChannel() {
-            return this.getCurrentServer().channels[this.currentChannel];
+        return this.getCurrentServer().channels[this.currentChannel];
         },
         setState(key, value) {
             this[key] = value;
@@ -33,15 +34,17 @@ window.addEventListener('DOMContentLoaded', () => {
         state[key] = value;
         update();
     }
-    changeState(state, setState);
     
     const getService = new GetService();
     getService.getResource('/quadath')
-        .then(res => {
-            state.data = res;
-            update();
-        });
-
+    .then(res => {
+        state.data = res;
+        update();
+    });
+    
+    settingsModal();
+    changeState(state, setState);
+    
     function update() {
         groupList(state);
         groupInfo(state);

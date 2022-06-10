@@ -1,5 +1,6 @@
 .group-info
     display: grid
+    position: relative
     grid-template-rows: 23px 51px 47px 1fr 15px 1fr
     padding: 32px 25px 0
 
@@ -98,30 +99,3 @@
                 &.online
                     &::before
                         background-color: #70CC16
-.server-settings 
-    width: 140px
-    height: 300px
-    position: absolute
-    top: 100px
-    z-index: 1
-    .bg
-        height: 100%
-        width: 100%
-        position: absolute
-        background-color: #666
-        border-radius: 5px
-        border: 3px solid #333
-        opacity: .9
-        z-index: 0
-    ul
-        padding: 2px 8px
-        z-index: 10
-        li
-            padding-top: 7px
-            height: 30px
-            text-align: center
-            display: block
-            font-weight: bold
-            border-bottom: 1px solid #444
-            z-index: 10
-            

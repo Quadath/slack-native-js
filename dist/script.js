@@ -308,6 +308,31 @@ exports["default"] = _default;
 
 /***/ }),
 
+/***/ "./src/js/components/settingsModal.js":
+/*!********************************************!*\
+  !*** ./src/js/components/settingsModal.js ***!
+  \********************************************/
+/***/ ((__unused_webpack_module, exports) => {
+
+exports.__esModule = true;
+exports["default"] = void 0;
+
+var settingsModal = function settingsModal(state) {
+  var settingsButton = document.querySelector('.group-info-settings'),
+      modal = document.querySelector('.server-settings'),
+      createChannel = modal.querySelector('[data-create-channel]'),
+      invitePeople = modal.querySelector('[data-invite-people]'),
+      leaveServer = modal.querySelector('[data-leave-server]');
+  settingsButton.addEventListener('click', function () {
+    modal.classList.toggle('active');
+  });
+};
+
+var _default = settingsModal;
+exports["default"] = _default;
+
+/***/ }),
+
 /***/ "./src/js/components/user-info.js":
 /*!****************************************!*\
   !*** ./src/js/components/user-info.js ***!
@@ -6573,6 +6598,8 @@ var _messages = _interopRequireDefault(__webpack_require__(/*! ./components/mess
 
 var _userInfo = _interopRequireDefault(__webpack_require__(/*! ./components/user-info */ "./src/js/components/user-info.js"));
 
+var _settingsModal = _interopRequireDefault(__webpack_require__(/*! ./components/settingsModal */ "./src/js/components/settingsModal.js"));
+
 var _changeState = _interopRequireDefault(__webpack_require__(/*! ./components/changeState */ "./src/js/components/changeState.js"));
 
 var _GetService = _interopRequireDefault(__webpack_require__(/*! ./services/GetService */ "./src/js/services/GetService.js"));
@@ -6604,12 +6631,13 @@ window.addEventListener('DOMContentLoaded', function () {
     update();
   };
 
-  (0, _changeState["default"])(state, setState);
   var getService = new _GetService["default"]();
   getService.getResource('/quadath').then(function (res) {
     state.data = res;
     update();
   });
+  (0, _settingsModal["default"])();
+  (0, _changeState["default"])(state, setState);
 
   function update() {
     (0, _groupList["default"])(state);

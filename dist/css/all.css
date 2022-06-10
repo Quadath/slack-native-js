@@ -118,6 +118,7 @@
 }
 .group-info {
   display: grid;
+  position: relative;
   grid-template-rows: 23px 51px 47px 1fr 15px 1fr;
   padding: 32px 25px 0;
   height: 100vh;
@@ -236,37 +237,6 @@
 .group-info-friend-list-item.online::before {
   background-color: #70CC16;
 }
-
-.server-settings {
-  width: 140px;
-  height: 300px;
-  position: absolute;
-  top: 100px;
-  z-index: 1;
-}
-.server-settings .bg {
-  height: 100%;
-  width: 100%;
-  position: absolute;
-  background-color: #666;
-  border-radius: 5px;
-  border: 3px solid #333;
-  opacity: 0.9;
-  z-index: 0;
-}
-.server-settings ul {
-  padding: 2px 8px;
-  z-index: 10;
-}
-.server-settings ul li {
-  padding-top: 7px;
-  height: 30px;
-  text-align: center;
-  display: block;
-  font-weight: bold;
-  border-bottom: 1px solid #444;
-  z-index: 10;
-}
 .group-list {
   display: flex;
   flex-direction: column;
@@ -332,7 +302,13 @@ body {
 }
 
 .red {
-  color: red;
+  color: red !important;
+  font-weight: bold !important;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
 }
 
 ::-webkit-scrollbar {
@@ -342,6 +318,30 @@ body {
 
 ::-webkit-scrollbar-thumb {
   background-color: #5c5c5c;
+}
+.group-info .server-settings {
+  width: 180px;
+  height: 300px;
+  right: -130px;
+  top: -300px;
+  position: absolute;
+  transition: 0.4s all;
+}
+.group-info .server-settings li {
+  z-index: 3;
+  list-style-type: none;
+}
+.group-info .active.server-settings {
+  top: 27px;
+}
+.group-info .create-channel-modal {
+  position: absolute;
+  top: 160px;
+  left: 23px;
+  padding: 4px;
+  border-radius: 4px;
+  z-index: 2;
+  background-color: #fff;
 }
 .user-info {
   display: grid;

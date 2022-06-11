@@ -41,8 +41,8 @@ window.addEventListener('DOMContentLoaded', () => {
         state.data = res;
         update();
     });
-    
-    settingsModal();
+
+    settingsModal(state);
     changeState(state, setState);
     
     function update() {

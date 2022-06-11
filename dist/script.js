@@ -312,19 +312,45 @@ exports["default"] = _default;
 /*!********************************************!*\
   !*** ./src/js/components/settingsModal.js ***!
   \********************************************/
-/***/ ((__unused_webpack_module, exports) => {
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 exports.__esModule = true;
 exports["default"] = void 0;
 
+__webpack_require__(/*! core-js/modules/es.regexp.exec.js */ "./node_modules/core-js/modules/es.regexp.exec.js");
+
+__webpack_require__(/*! core-js/modules/es.string.replace.js */ "./node_modules/core-js/modules/es.string.replace.js");
+
 var settingsModal = function settingsModal(state) {
   var settingsButton = document.querySelector('.group-info-settings'),
       modal = document.querySelector('.server-settings'),
+      createChannelForm = document.querySelector('.create-channel-form'),
       createChannel = modal.querySelector('[data-create-channel]'),
       invitePeople = modal.querySelector('[data-invite-people]'),
       leaveServer = modal.querySelector('[data-leave-server]');
   settingsButton.addEventListener('click', function () {
     modal.classList.toggle('active');
+    createChannelForm.classList.remove('active');
+  });
+  createChannel.addEventListener('click', function () {
+    createChannelForm.classList.toggle('active');
+  });
+  createChannelForm.addEventListener('submit', function (e) {
+    var nameInput = createChannelForm.querySelector('input');
+
+    if (nameInput.value.replace(/\s/g, "").length > 0 && !nameInput.value == '') {
+      e.preventDefault();
+      var newData = state.data;
+      var channel = {
+        name: nameInput.value,
+        messages: []
+      };
+      modal.classList.remove('active');
+      createChannelForm.classList.remove('active');
+      nameInput.value = '';
+      newData.servers[state.currentServer].channels.push(channel);
+      state.setState('data', newData);
+    }
   });
 };
 
@@ -6636,7 +6662,7 @@ window.addEventListener('DOMContentLoaded', function () {
     state.data = res;
     update();
   });
-  (0, _settingsModal["default"])();
+  (0, _settingsModal["default"])(state);
   (0, _changeState["default"])(state, setState);
 
   function update() {

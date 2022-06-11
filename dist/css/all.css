@@ -334,14 +334,18 @@ a {
 .group-info .active.server-settings {
   top: 27px;
 }
-.group-info .create-channel-modal {
+.group-info .create-channel-form {
   position: absolute;
-  top: 160px;
+  top: -300px;
   left: 23px;
   padding: 4px;
   border-radius: 4px;
   z-index: 2;
   background-color: #fff;
+  transition: 0.4s all;
+}
+.group-info .active.create-channel-form {
+  top: 180px;
 }
 .user-info {
   display: grid;

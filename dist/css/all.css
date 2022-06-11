@@ -347,6 +347,20 @@ a {
 .group-info .active.create-channel-form {
   top: 180px;
 }
+.group-info .leave-server-modal {
+  position: absolute;
+  top: -300px;
+  left: 133px;
+  padding: 4px;
+  border-radius: 4px;
+  z-index: 2;
+  background-color: #fff;
+  transition: 1s all;
+  z-index: 4;
+}
+.group-info .active.leave-server-modal {
+  top: 180px;
+}
 .user-info {
   display: grid;
   grid-template-rows: 200px 1fr;

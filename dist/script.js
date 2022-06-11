@@ -321,18 +321,28 @@ __webpack_require__(/*! core-js/modules/es.regexp.exec.js */ "./node_modules/cor
 
 __webpack_require__(/*! core-js/modules/es.string.replace.js */ "./node_modules/core-js/modules/es.string.replace.js");
 
+__webpack_require__(/*! core-js/modules/es.array.filter.js */ "./node_modules/core-js/modules/es.array.filter.js");
+
+__webpack_require__(/*! core-js/modules/es.object.to-string.js */ "./node_modules/core-js/modules/es.object.to-string.js");
+
+__webpack_require__(/*! core-js/modules/es.function.name.js */ "./node_modules/core-js/modules/es.function.name.js");
+
 var settingsModal = function settingsModal(state) {
   var settingsButton = document.querySelector('.group-info-settings'),
       modal = document.querySelector('.server-settings'),
       createChannelForm = document.querySelector('.create-channel-form'),
+      leaveServerModal = document.querySelector('.leave-server-modal'),
       createChannel = modal.querySelector('[data-create-channel]'),
       invitePeople = modal.querySelector('[data-invite-people]'),
       leaveServer = modal.querySelector('[data-leave-server]');
   settingsButton.addEventListener('click', function () {
     modal.classList.toggle('active');
     createChannelForm.classList.remove('active');
+    leaveServerModal.classList.remove('active');
   });
-  createChannel.addEventListener('click', function () {
+  createChannel.addEventListener('click', function (e) {
+    e.preventDefault();
+    leaveServerModal.classList.remove('active');
     createChannelForm.classList.toggle('active');
   });
   createChannelForm.addEventListener('submit', function (e) {
@@ -351,6 +361,22 @@ var settingsModal = function settingsModal(state) {
       newData.servers[state.currentServer].channels.push(channel);
       state.setState('data', newData);
     }
+  });
+  leaveServer.addEventListener('click', function (e) {
+    e.preventDefault();
+    createChannelForm.classList.remove('active');
+    leaveServerModal.classList.toggle('active');
+  });
+  leaveServerModal.querySelector('button').addEventListener('click', function (e) {
+    e.preventDefault();
+    var newData = state.data;
+    newServers = newData.servers.filter(function (item) {
+      return item.name != state.getCurrentServer().name;
+    });
+    newData.servers = newServers;
+    state.setState('data', newData);
+    modal.classList.remove('active');
+    leaveServerModal.classList.remove('active');
   });
 };
 
@@ -4700,6 +4726,32 @@ $({ target: 'Array', proto: true, arity: 1, forced: FORCED }, {
     }
     A.length = n;
     return A;
+  }
+});
+
+
+/***/ }),
+
+/***/ "./node_modules/core-js/modules/es.array.filter.js":
+/*!*********************************************************!*\
+  !*** ./node_modules/core-js/modules/es.array.filter.js ***!
+  \*********************************************************/
+/***/ ((__unused_webpack_module, __unused_webpack_exports, __webpack_require__) => {
+
+"use strict";
+
+var $ = __webpack_require__(/*! ../internals/export */ "./node_modules/core-js/internals/export.js");
+var $filter = (__webpack_require__(/*! ../internals/array-iteration */ "./node_modules/core-js/internals/array-iteration.js").filter);
+var arrayMethodHasSpeciesSupport = __webpack_require__(/*! ../internals/array-method-has-species-support */ "./node_modules/core-js/internals/array-method-has-species-support.js");
+
+var HAS_SPECIES_SUPPORT = arrayMethodHasSpeciesSupport('filter');
+
+// `Array.prototype.filter` method
+// https://tc39.es/ecma262/#sec-array.prototype.filter
+// with adding support of @@species
+$({ target: 'Array', proto: true, forced: !HAS_SPECIES_SUPPORT }, {
+  filter: function filter(callbackfn /* , thisArg */) {
+    return $filter(this, callbackfn, arguments.length > 1 ? arguments[1] : undefined);
   }
 });
 

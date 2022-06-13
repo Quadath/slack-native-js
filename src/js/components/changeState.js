@@ -3,6 +3,7 @@ const changeState = (state) => {
         searchInput = document.querySelector('.group-dialogue-header input'),
         messageInput = document.querySelector('#send-message');
 
+    messageInput.value = state.messageInputValue;
     channels.forEach(item => {
         console.log('called')
         item.addEventListener('click', () => {
@@ -16,7 +17,9 @@ const changeState = (state) => {
     searchInput.addEventListener('input', () => {
         state.setState('searchQuery', searchInput.value);
     });
-
+    messageInput.addEventListener('input', () => {
+        state.setState('messageInputValue', messageInput.value);
+    });
     document.addEventListener('keyup', (e) => {
         if (e.code == 'Enter') {
             let str = messageInput.value;

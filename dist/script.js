@@ -32,6 +32,7 @@ var changeState = function changeState(state) {
   var channels = document.querySelectorAll('.group-info-channels-list-item span'),
       searchInput = document.querySelector('.group-dialogue-header input'),
       messageInput = document.querySelector('#send-message');
+  messageInput.value = state.messageInputValue;
   channels.forEach(function (item) {
     console.log('called');
     item.addEventListener('click', function () {
@@ -43,6 +44,9 @@ var changeState = function changeState(state) {
   });
   searchInput.addEventListener('input', function () {
     state.setState('searchQuery', searchInput.value);
+  });
+  messageInput.addEventListener('input', function () {
+    state.setState('messageInputValue', messageInput.value);
   });
   document.addEventListener('keyup', function (e) {
     if (e.code == 'Enter') {
@@ -86,6 +90,7 @@ var dialogueWindow = function dialogueWindow(state) {
   var groupName = document.querySelector('.group-dialogue-title'),
       searchInput = document.querySelector('.group-dialogue-header input');
   groupName.textContent = "#" + state.getCurrentChannel().name;
+  searchInput.value = state.searchQuery;
 };
 
 var _default = dialogueWindow;
@@ -3033,6 +3038,38 @@ module.exports = function (it) {
 
 /***/ }),
 
+/***/ "./node_modules/core-js/internals/number-parse-int.js":
+/*!************************************************************!*\
+  !*** ./node_modules/core-js/internals/number-parse-int.js ***!
+  \************************************************************/
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+var global = __webpack_require__(/*! ../internals/global */ "./node_modules/core-js/internals/global.js");
+var fails = __webpack_require__(/*! ../internals/fails */ "./node_modules/core-js/internals/fails.js");
+var uncurryThis = __webpack_require__(/*! ../internals/function-uncurry-this */ "./node_modules/core-js/internals/function-uncurry-this.js");
+var toString = __webpack_require__(/*! ../internals/to-string */ "./node_modules/core-js/internals/to-string.js");
+var trim = (__webpack_require__(/*! ../internals/string-trim */ "./node_modules/core-js/internals/string-trim.js").trim);
+var whitespaces = __webpack_require__(/*! ../internals/whitespaces */ "./node_modules/core-js/internals/whitespaces.js");
+
+var $parseInt = global.parseInt;
+var Symbol = global.Symbol;
+var ITERATOR = Symbol && Symbol.iterator;
+var hex = /^[+-]?0x/i;
+var exec = uncurryThis(hex.exec);
+var FORCED = $parseInt(whitespaces + '08') !== 8 || $parseInt(whitespaces + '0x16') !== 22
+  // MS Edge 18- broken with boxed symbols
+  || (ITERATOR && !fails(function () { $parseInt(Object(ITERATOR)); }));
+
+// `parseInt` method
+// https://tc39.es/ecma262/#sec-parseint-string-radix
+module.exports = FORCED ? function parseInt(string, radix) {
+  var S = trim(toString(string));
+  return $parseInt(S, (radix >>> 0) || (exec(hex, S) ? 16 : 10));
+} : $parseInt;
+
+
+/***/ }),
+
 /***/ "./node_modules/core-js/internals/object-create.js":
 /*!*********************************************************!*\
   !*** ./node_modules/core-js/internals/object-create.js ***!
@@ -4170,6 +4207,47 @@ module.exports = {
 
 /***/ }),
 
+/***/ "./node_modules/core-js/internals/string-trim.js":
+/*!*******************************************************!*\
+  !*** ./node_modules/core-js/internals/string-trim.js ***!
+  \*******************************************************/
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+var uncurryThis = __webpack_require__(/*! ../internals/function-uncurry-this */ "./node_modules/core-js/internals/function-uncurry-this.js");
+var requireObjectCoercible = __webpack_require__(/*! ../internals/require-object-coercible */ "./node_modules/core-js/internals/require-object-coercible.js");
+var toString = __webpack_require__(/*! ../internals/to-string */ "./node_modules/core-js/internals/to-string.js");
+var whitespaces = __webpack_require__(/*! ../internals/whitespaces */ "./node_modules/core-js/internals/whitespaces.js");
+
+var replace = uncurryThis(''.replace);
+var whitespace = '[' + whitespaces + ']';
+var ltrim = RegExp('^' + whitespace + whitespace + '*');
+var rtrim = RegExp(whitespace + whitespace + '*$');
+
+// `String.prototype.{ trim, trimStart, trimEnd, trimLeft, trimRight }` methods implementation
+var createMethod = function (TYPE) {
+  return function ($this) {
+    var string = toString(requireObjectCoercible($this));
+    if (TYPE & 1) string = replace(string, ltrim, '');
+    if (TYPE & 2) string = replace(string, rtrim, '');
+    return string;
+  };
+};
+
+module.exports = {
+  // `String.prototype.{ trimLeft, trimStart }` methods
+  // https://tc39.es/ecma262/#sec-string.prototype.trimstart
+  start: createMethod(1),
+  // `String.prototype.{ trimRight, trimEnd }` methods
+  // https://tc39.es/ecma262/#sec-string.prototype.trimend
+  end: createMethod(2),
+  // `String.prototype.trim` method
+  // https://tc39.es/ecma262/#sec-string.prototype.trim
+  trim: createMethod(3)
+};
+
+
+/***/ }),
+
 /***/ "./node_modules/core-js/internals/symbol-define-to-primitive.js":
 /*!**********************************************************************!*\
   !*** ./node_modules/core-js/internals/symbol-define-to-primitive.js ***!
@@ -4654,6 +4732,19 @@ module.exports = function (name) {
     }
   } return WellKnownSymbolsStore[name];
 };
+
+
+/***/ }),
+
+/***/ "./node_modules/core-js/internals/whitespaces.js":
+/*!*******************************************************!*\
+  !*** ./node_modules/core-js/internals/whitespaces.js ***!
+  \*******************************************************/
+/***/ ((module) => {
+
+// a string of all valid unicode whitespaces
+module.exports = '\u0009\u000A\u000B\u000C\u000D\u0020\u00A0\u1680\u2000\u2001\u2002' +
+  '\u2003\u2004\u2005\u2006\u2007\u2008\u2009\u200A\u202F\u205F\u3000\u2028\u2029\uFEFF';
 
 
 /***/ }),
@@ -5342,6 +5433,24 @@ var toString = __webpack_require__(/*! ../internals/object-to-string */ "./node_
 if (!TO_STRING_TAG_SUPPORT) {
   defineBuiltIn(Object.prototype, 'toString', toString, { unsafe: true });
 }
+
+
+/***/ }),
+
+/***/ "./node_modules/core-js/modules/es.parse-int.js":
+/*!******************************************************!*\
+  !*** ./node_modules/core-js/modules/es.parse-int.js ***!
+  \******************************************************/
+/***/ ((__unused_webpack_module, __unused_webpack_exports, __webpack_require__) => {
+
+var $ = __webpack_require__(/*! ../internals/export */ "./node_modules/core-js/internals/export.js");
+var $parseInt = __webpack_require__(/*! ../internals/number-parse-int */ "./node_modules/core-js/internals/number-parse-int.js");
+
+// `parseInt` method
+// https://tc39.es/ecma262/#sec-parseint-string-radix
+$({ global: true, forced: parseInt != $parseInt }, {
+  parseInt: $parseInt
+});
 
 
 /***/ }),
@@ -6666,6 +6775,22 @@ var __webpack_exports__ = {};
 /*!************************!*\
   !*** ./src/js/main.js ***!
   \************************/
+__webpack_require__(/*! core-js/modules/es.parse-int.js */ "./node_modules/core-js/modules/es.parse-int.js");
+
+__webpack_require__(/*! core-js/modules/es.symbol.js */ "./node_modules/core-js/modules/es.symbol.js");
+
+__webpack_require__(/*! core-js/modules/es.symbol.description.js */ "./node_modules/core-js/modules/es.symbol.description.js");
+
+__webpack_require__(/*! core-js/modules/es.object.to-string.js */ "./node_modules/core-js/modules/es.object.to-string.js");
+
+__webpack_require__(/*! core-js/modules/es.symbol.iterator.js */ "./node_modules/core-js/modules/es.symbol.iterator.js");
+
+__webpack_require__(/*! core-js/modules/es.array.iterator.js */ "./node_modules/core-js/modules/es.array.iterator.js");
+
+__webpack_require__(/*! core-js/modules/es.string.iterator.js */ "./node_modules/core-js/modules/es.string.iterator.js");
+
+__webpack_require__(/*! core-js/modules/web.dom-collections.iterator.js */ "./node_modules/core-js/modules/web.dom-collections.iterator.js");
+
 var _groupList = _interopRequireDefault(__webpack_require__(/*! ./components/group-list */ "./src/js/components/group-list.js"));
 
 var _groupInfo = _interopRequireDefault(__webpack_require__(/*! ./components/group-info */ "./src/js/components/group-info.js"));
@@ -6684,12 +6809,15 @@ var _GetService = _interopRequireDefault(__webpack_require__(/*! ./services/GetS
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
+function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof(obj); }
+
 window.addEventListener('DOMContentLoaded', function () {
   var state = {
-    currentServer: 0,
-    currentChannel: 0,
-    selectedUser: '',
-    searchQuery: '',
+    currentServer: loadKey('currentServer', 0),
+    currentChannel: loadKey('currentChannel', 0),
+    messageInputValue: loadKey('messageInputValue', ''),
+    selectedUser: loadKey('selectedUser', ''),
+    searchQuery: loadKey('searchQuery', ''),
     data: {},
     getCurrentServer: function getCurrentServer() {
       return this.data.servers[this.currentServer];
@@ -6700,14 +6828,31 @@ window.addEventListener('DOMContentLoaded', function () {
     setState: function setState(key, value) {
       this[key] = value;
       update();
+      this.saveData();
       console.log(this);
+    },
+    saveData: function saveData() {
+      localStorage.setItem('currentServer', this.currentServer);
+      localStorage.setItem('currentChannel', this.currentChannel);
+      localStorage.setItem('messageInputValue', this.messageInputValue);
+      localStorage.setItem('selectedUser', this.selectedUser);
+      localStorage.setItem('searchQuery', this.searchQuery);
     }
   };
 
-  var setState = function setState(key, value) {
-    state[key] = value;
-    update();
-  };
+  function loadKey(key, def) {
+    if (localStorage.getItem(key)) {
+      value = localStorage.getItem(key);
+
+      if ((typeof value === "undefined" ? "undefined" : _typeof(value)) === _typeof(def)) {
+        return value;
+      } else {
+        return parseInt(value);
+      }
+    } else {
+      return def;
+    }
+  }
 
   var getService = new _GetService["default"]();
   getService.getResource('/quadath').then(function (res) {
@@ -6715,7 +6860,7 @@ window.addEventListener('DOMContentLoaded', function () {
     update();
   });
   (0, _settingsModal["default"])(state);
-  (0, _changeState["default"])(state, setState);
+  (0, _changeState["default"])(state);
 
   function update() {
     (0, _groupList["default"])(state);
@@ -6725,6 +6870,8 @@ window.addEventListener('DOMContentLoaded', function () {
     (0, _userInfo["default"])(state);
   }
 });
+
+if (false) {}
 })();
 
 /******/ })()

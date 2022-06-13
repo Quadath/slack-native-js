@@ -5,5 +5,6 @@ const dialogueWindow = (state) => {
     
 
     groupName.textContent = "#" + state.getCurrentChannel().name;
+    searchInput.value = state.searchQuery;
 }
 export default dialogueWindow;

@@ -10,13 +10,15 @@ import GetService from "./services/GetService";
 
 window.addEventListener('DOMContentLoaded', () => {
     const state = {
-        currentServer: 0,
-        currentChannel: 0,
-        selectedUser: '',
-        searchQuery: '',
+        currentServer: loadKey('currentServer', 0),
+        currentChannel: loadKey('currentChannel', 0),
+        messageInputValue: loadKey('messageInputValue', ''),
+        selectedUser: loadKey('selectedUser', ''),
+        searchQuery: loadKey('searchQuery', ''),
         data: {
 
         },
+
         getCurrentServer() {
             return this.data.servers[this.currentServer];
         },
@@ -26,15 +28,31 @@ window.addEventListener('DOMContentLoaded', () => {
         setState(key, value) {
             this[key] = value;
             update();
+            this.saveData();
             console.log(this);
+        },
+        saveData() {
+            localStorage.setItem('currentServer', this.currentServer);
+            localStorage.setItem('currentChannel', this.currentChannel);
+            localStorage.setItem('messageInputValue', this.messageInputValue);
+            localStorage.setItem('selectedUser', this.selectedUser);
+            localStorage.setItem('searchQuery', this.searchQuery);
+        },
+        
+    }
+    function loadKey(key, def) {
+        if(localStorage.getItem(key)) {
+            value = localStorage.getItem(key);
+            if (typeof(value) === typeof(def)) {
+                return value
+            } else {
+                return parseInt(value);
+            }
+        } else {
+            return def;
         }
     }
-    
-    const setState = (key, value) => {
-        state[key] = value;
-        update();
-    }
-    
+
     const getService = new GetService();
     getService.getResource('/quadath')
     .then(res => {
@@ -43,7 +61,7 @@ window.addEventListener('DOMContentLoaded', () => {
     });
 
     settingsModal(state);
-    changeState(state, setState);
+    changeState(state);
     
     function update() {
         groupList(state);
@@ -54,3 +72,6 @@ window.addEventListener('DOMContentLoaded', () => {
     }
 
 });
+if (0 === 1) {
+    console.log('')
+}

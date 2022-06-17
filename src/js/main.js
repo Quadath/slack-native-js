@@ -25,11 +25,19 @@ window.addEventListener('DOMContentLoaded', () => {
         getCurrentChannel() {
         return this.getCurrentServer().channels[this.currentChannel];
         },
+        setStates(value) {
+            Object.keys(value).forEach(item => {
+                this[item] = value[item];
+            })
+            update();
+            this.saveData();
+            // console.log(this);
+        },
         setState(key, value) {
             this[key] = value;
             update();
             this.saveData();
-            console.log(this);
+            // console.log(this);   
         },
         saveData() {
             localStorage.setItem('currentServer', this.currentServer);
@@ -38,7 +46,9 @@ window.addEventListener('DOMContentLoaded', () => {
             localStorage.setItem('selectedUser', this.selectedUser);
             localStorage.setItem('searchQuery', this.searchQuery);
         },
-        
+        setValueFromObject(key) {
+            console.log(key);
+        }
     }
     function loadKey(key, def) {
         if(localStorage.getItem(key)) {

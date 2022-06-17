@@ -48,10 +48,14 @@ const settingsModal = (state) => {
 
         newServers = newData.servers.filter(item => item.name != state.getCurrentServer().name);
         newData.servers = newServers;
-        state.setState('data', newData);
+        state.setStates({
+            currentServer: 0,
+            currentChannel: 0,
+            data: newData
+        })
         
-        modal.classList.remove('active');
         leaveServerModal.classList.remove('active');
+        modal.classList.remove('active');
     });
 }
 export default settingsModal;

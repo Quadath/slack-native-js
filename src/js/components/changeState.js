@@ -37,7 +37,10 @@ const changeState = (state) => {
                 }
                 messageInput.value = '';
                 newData.servers[state.currentServer].channels[state.currentChannel].messages.push(newMessage);
-                state.setState('data', newData);
+                state.setStates({
+                    messageInputValue: '',
+                    data: newData
+                });
             }
         }
     })

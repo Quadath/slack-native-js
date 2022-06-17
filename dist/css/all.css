@@ -273,6 +273,7 @@
 
 body {
   margin: 0;
+  overflow: hidden;
 }
 
 .main {
@@ -408,6 +409,9 @@ a {
   border-radius: 50%;
   background-color: #e8e8e8;
 }
+.user-info-actions {
+  position: relative;
+}
 .user-info-actions button {
   height: 25px;
   background-color: #3577EF;
@@ -425,6 +429,16 @@ a {
 .user-info-actions-other {
   width: 25px;
   margin-left: 3px;
+}
+.user-info-actions-modal {
+  width: 160px;
+  position: absolute;
+  top: 340px;
+  right: -189px;
+  transition: 0.4s all;
+}
+.user-info-actions-modal.active {
+  right: 20px;
 }
 .user-info-details {
   display: flex;

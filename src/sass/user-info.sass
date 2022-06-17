@@ -38,6 +38,7 @@
             border-radius: 50%
             background-color: #e8e8e8
     &-actions
+        position: relative
         button
             height: 25px
             background-color: #3577EF
@@ -53,6 +54,14 @@
         &-other
             width: 25px
             margin-left: 3px
+        &-modal
+            width: 160px
+            position: absolute
+            top: 340px
+            right: -189px
+            transition: .4s all
+        &-modal.active
+            right: 20px
     &-details
         display: flex
         align-items: flex-start

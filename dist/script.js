@@ -64,7 +64,10 @@ var changeState = function changeState(state) {
         };
         messageInput.value = '';
         newData.servers[state.currentServer].channels[state.currentChannel].messages.push(newMessage);
-        state.setState('data', newData);
+        state.setStates({
+          messageInputValue: '',
+          data: newData
+        });
       }
     }
   });
@@ -184,8 +187,10 @@ var groupList = function groupList(state) {
     groupListItem.classList.add('group-list-icon');
     groupListItem.setAttribute('index', i);
     groupListItem.addEventListener('click', function () {
-      state.setState('currentServer', i);
-      state.setState('currentChannel', 0);
+      state.setStates({
+        currentServer: i,
+        currentChannel: 0
+      });
     });
     groupList.append(groupListItem);
   });
@@ -379,9 +384,13 @@ var settingsModal = function settingsModal(state) {
       return item.name != state.getCurrentServer().name;
     });
     newData.servers = newServers;
-    state.setState('data', newData);
-    modal.classList.remove('active');
+    state.setStates({
+      currentServer: 0,
+      currentChannel: 0,
+      data: newData
+    });
     leaveServerModal.classList.remove('active');
+    modal.classList.remove('active');
   });
 };
 
@@ -409,7 +418,12 @@ var userInfo = function userInfo(state) {
   var name = document.querySelector('.user-info-name'),
       username = document.querySelector('.user-info-details-username'),
       email = document.querySelector('.user-info-details-email'),
-      skype = document.querySelector('.user-info-details-skype');
+      skype = document.querySelector('.user-info-details-skype'),
+      actionsButton = document.querySelector('.user-info-actions-other'),
+      actionsModal = document.querySelector('.user-info-actions-modal');
+  actionsButton.addEventListener('click', function () {
+    actionsModal.classList.toggle('active');
+  });
   users = state.data.users;
 
   if (state.selectedUser) {
@@ -5400,6 +5414,30 @@ $({ target: 'Object', stat: true, forced: FAILS_ON_PRIMITIVES, sham: !CORRECT_PR
 
 /***/ }),
 
+/***/ "./node_modules/core-js/modules/es.object.keys.js":
+/*!********************************************************!*\
+  !*** ./node_modules/core-js/modules/es.object.keys.js ***!
+  \********************************************************/
+/***/ ((__unused_webpack_module, __unused_webpack_exports, __webpack_require__) => {
+
+var $ = __webpack_require__(/*! ../internals/export */ "./node_modules/core-js/internals/export.js");
+var toObject = __webpack_require__(/*! ../internals/to-object */ "./node_modules/core-js/internals/to-object.js");
+var nativeKeys = __webpack_require__(/*! ../internals/object-keys */ "./node_modules/core-js/internals/object-keys.js");
+var fails = __webpack_require__(/*! ../internals/fails */ "./node_modules/core-js/internals/fails.js");
+
+var FAILS_ON_PRIMITIVES = fails(function () { nativeKeys(1); });
+
+// `Object.keys` method
+// https://tc39.es/ecma262/#sec-object.keys
+$({ target: 'Object', stat: true, forced: FAILS_ON_PRIMITIVES }, {
+  keys: function keys(it) {
+    return nativeKeys(toObject(it));
+  }
+});
+
+
+/***/ }),
+
 /***/ "./node_modules/core-js/modules/es.object.set-prototype-of.js":
 /*!********************************************************************!*\
   !*** ./node_modules/core-js/modules/es.object.set-prototype-of.js ***!
@@ -6775,13 +6813,9 @@ var __webpack_exports__ = {};
 /*!************************!*\
   !*** ./src/js/main.js ***!
   \************************/
-__webpack_require__(/*! core-js/modules/es.parse-int.js */ "./node_modules/core-js/modules/es.parse-int.js");
-
 __webpack_require__(/*! core-js/modules/es.symbol.js */ "./node_modules/core-js/modules/es.symbol.js");
 
 __webpack_require__(/*! core-js/modules/es.symbol.description.js */ "./node_modules/core-js/modules/es.symbol.description.js");
-
-__webpack_require__(/*! core-js/modules/es.object.to-string.js */ "./node_modules/core-js/modules/es.object.to-string.js");
 
 __webpack_require__(/*! core-js/modules/es.symbol.iterator.js */ "./node_modules/core-js/modules/es.symbol.iterator.js");
 
@@ -6790,6 +6824,16 @@ __webpack_require__(/*! core-js/modules/es.array.iterator.js */ "./node_modules/
 __webpack_require__(/*! core-js/modules/es.string.iterator.js */ "./node_modules/core-js/modules/es.string.iterator.js");
 
 __webpack_require__(/*! core-js/modules/web.dom-collections.iterator.js */ "./node_modules/core-js/modules/web.dom-collections.iterator.js");
+
+__webpack_require__(/*! core-js/modules/es.array.for-each.js */ "./node_modules/core-js/modules/es.array.for-each.js");
+
+__webpack_require__(/*! core-js/modules/es.object.to-string.js */ "./node_modules/core-js/modules/es.object.to-string.js");
+
+__webpack_require__(/*! core-js/modules/web.dom-collections.for-each.js */ "./node_modules/core-js/modules/web.dom-collections.for-each.js");
+
+__webpack_require__(/*! core-js/modules/es.object.keys.js */ "./node_modules/core-js/modules/es.object.keys.js");
+
+__webpack_require__(/*! core-js/modules/es.parse-int.js */ "./node_modules/core-js/modules/es.parse-int.js");
 
 var _groupList = _interopRequireDefault(__webpack_require__(/*! ./components/group-list */ "./src/js/components/group-list.js"));
 
@@ -6825,11 +6869,19 @@ window.addEventListener('DOMContentLoaded', function () {
     getCurrentChannel: function getCurrentChannel() {
       return this.getCurrentServer().channels[this.currentChannel];
     },
+    setStates: function setStates(value) {
+      var _this = this;
+
+      Object.keys(value).forEach(function (item) {
+        _this[item] = value[item];
+      });
+      update();
+      this.saveData(); // console.log(this);
+    },
     setState: function setState(key, value) {
       this[key] = value;
       update();
-      this.saveData();
-      console.log(this);
+      this.saveData(); // console.log(this);   
     },
     saveData: function saveData() {
       localStorage.setItem('currentServer', this.currentServer);
@@ -6837,6 +6889,9 @@ window.addEventListener('DOMContentLoaded', function () {
       localStorage.setItem('messageInputValue', this.messageInputValue);
       localStorage.setItem('selectedUser', this.selectedUser);
       localStorage.setItem('searchQuery', this.searchQuery);
+    },
+    setValueFromObject: function setValueFromObject(key) {
+      console.log(key);
     }
   };
 

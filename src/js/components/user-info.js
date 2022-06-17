@@ -2,9 +2,13 @@ const userInfo = (state) => {
     const name = document.querySelector('.user-info-name'),
         username = document.querySelector('.user-info-details-username'),
         email = document.querySelector('.user-info-details-email'),
-        skype = document.querySelector('.user-info-details-skype');
+        skype = document.querySelector('.user-info-details-skype'),
+        actionsButton = document.querySelector('.user-info-actions-other'),
+        actionsModal = document.querySelector('.user-info-actions-modal');
 
-
+    actionsButton.addEventListener('click', () => {
+        actionsModal.classList.toggle('active');
+    });
 
     users = state.data.users;
     if(state.selectedUser) {
@@ -18,3 +22,4 @@ const userInfo = (state) => {
     }
 }
 export default userInfo;
+

@@ -1,4 +1,7 @@
+@import "mixins"
+
 .user-info
+    position: relative
     .padding
         padding: 14px 19px
         display: grid
@@ -75,3 +78,6 @@
             margin: 0
             line-height: 17px
             font-size: 14px
+    &-modal
+        @include absolute-center
+        z-index: 5

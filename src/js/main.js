@@ -20,10 +20,26 @@ window.addEventListener('DOMContentLoaded', () => {
         },
 
         getCurrentServer() {
-            return this.data.servers[this.currentServer];
+            if (this.data.servers[this.currentChannel]) {
+                return this.data.servers[this.currentServer];
+            } else {
+                return {
+                    id: 0,
+                    name: 'No server',
+                    serverpic: '',
+                    channels: [
+                        {
+                            name: 'no channels',
+                            messages: [
+                                
+                            ]
+                        }
+                    ]
+                }
+            }
         },
         getCurrentChannel() {
-        return this.getCurrentServer().channels[this.currentChannel];
+            return this.getCurrentServer().channels[this.currentChannel];
         },
         setStates(value) {
             Object.keys(value).forEach(item => {

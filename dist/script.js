@@ -128,29 +128,37 @@ var groupInfo = function groupInfo(state) {
   var prevChannels = document.querySelectorAll('.group-info-channels-list-item'),
       channelList = document.querySelector('.group-info-channels-list'),
       channelCount = document.querySelector('#channel-count');
-  channelCount.textContent = data.servers[index].channels.length;
-  prevChannels.forEach(function (item) {
-    item.remove();
-  });
-  data.servers[index].channels.forEach(function (item, i) {
-    var channelListItem = document.createElement('div'),
-        span = document.createElement('span');
 
-    if (i == state.currentChannel) {
-      channelListItem.classList.add('active');
-    }
-
-    channelListItem.classList.add('group-info-channels-list-item');
-    span.textContent = "# ".concat(item.name);
-    channelListItem.append(span);
-    channelListItem.addEventListener('click', function () {
-      var index = state.getCurrentServer().channels.findIndex(function (chan) {
-        return chan.name == channelListItem.childNodes[0].textContent.slice(2);
-      });
-      state.setState('currentChannel', index);
+  if (data.servers.length != 0) {
+    channelCount.textContent = data.servers[index].channels.length;
+    prevChannels.forEach(function (item) {
+      item.remove();
     });
-    channelList.append(channelListItem);
-  });
+    data.servers[index].channels.forEach(function (item, i) {
+      var channelListItem = document.createElement('div'),
+          span = document.createElement('span');
+
+      if (i == state.currentChannel) {
+        channelListItem.classList.add('active');
+      }
+
+      channelListItem.classList.add('group-info-channels-list-item');
+      span.textContent = "# ".concat(item.name);
+      channelListItem.append(span);
+      channelListItem.addEventListener('click', function () {
+        var index = state.getCurrentServer().channels.findIndex(function (chan) {
+          return chan.name == channelListItem.childNodes[0].textContent.slice(2);
+        });
+        state.setState('currentChannel', index);
+      });
+      channelList.append(channelListItem);
+    });
+  } else {
+    prevChannels.forEach(function (item) {
+      item.remove();
+    });
+    channelCount.textContent = '0';
+  }
 };
 
 var _default = groupInfo;
@@ -231,47 +239,52 @@ var messages = function messages(state) {
   prevTime.setTime(0);
   var messageList = document.querySelector('.group-dialogue-messages-list');
   messageList.innerHTML = '';
-  state.getCurrentChannel().messages.forEach(function (item) {
-    if (item.text.includes(state.searchQuery)) {
-      var message = document.createElement('div'),
-          profilepic = document.createElement('img'),
-          name = document.createElement('span'),
-          time = document.createElement('span'),
-          text = document.createElement('span'),
-          wrapperFlDc = document.createElement('div'),
-          nameWrapper = document.createElement('div'),
-          textWrapper = document.createElement('div');
-      profilepic.setAttribute('src', item.order['profilepic']);
-      name.textContent = item.order.name;
-      name.classList.add('name');
-      time.textContent = convertTime(item.time);
-      time.classList.add('time');
-      text.textContent = item.text;
-      text.classList.add('text');
 
-      if (item.time - prevTime.getTime() < 60000) {
-        wrapperFlDc.classList.add('m47');
-      } else {
-        nameWrapper.append(name);
-        nameWrapper.append(time);
-        message.append(profilepic);
-      }
+  if (state.getCurrentChannel().messages.length > 0) {
+    state.getCurrentChannel().messages.forEach(function (item) {
+      if (item.text.includes(state.searchQuery)) {
+        var message = document.createElement('div'),
+            profilepic = document.createElement('img'),
+            name = document.createElement('span'),
+            time = document.createElement('span'),
+            text = document.createElement('span'),
+            wrapperFlDc = document.createElement('div'),
+            nameWrapper = document.createElement('div'),
+            textWrapper = document.createElement('div');
+        profilepic.setAttribute('src', item.order['profilepic']);
+        name.textContent = item.order.name;
+        name.classList.add('name');
+        time.textContent = convertTime(item.time);
+        time.classList.add('time');
+        text.textContent = item.text;
+        text.classList.add('text');
 
-      textWrapper.append(text);
-      wrapperFlDc.classList.add('fl-dc');
-      wrapperFlDc.append(nameWrapper);
-      wrapperFlDc.append(textWrapper);
-      message.append(wrapperFlDc);
-      message.classList.add('group-dialogue-messages-list-item');
-      messageList.append(message);
-      prevTime.setTime(item.time);
-      message.addEventListener('click', function (e) {
-        if (e.target.className == 'name') {
-          state.setState('selectedUser', e.target.textContent);
+        if (item.time - prevTime.getTime() < 60000) {
+          wrapperFlDc.classList.add('m47');
+        } else {
+          nameWrapper.append(name);
+          nameWrapper.append(time);
+          message.append(profilepic);
         }
-      });
-    }
-  });
+
+        textWrapper.append(text);
+        wrapperFlDc.classList.add('fl-dc');
+        wrapperFlDc.append(nameWrapper);
+        wrapperFlDc.append(textWrapper);
+        message.append(wrapperFlDc);
+        message.classList.add('group-dialogue-messages-list-item');
+        messageList.append(message);
+        prevTime.setTime(item.time);
+        message.addEventListener('click', function (e) {
+          if (e.target.className == 'name') {
+            state.setState('selectedUser', e.target.textContent);
+          }
+        });
+      }
+    });
+  } else {
+    messageList.append(Divider('no messages!'));
+  }
 
   function convertTime(ms) {
     var monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
@@ -6864,7 +6877,19 @@ window.addEventListener('DOMContentLoaded', function () {
     searchQuery: loadKey('searchQuery', ''),
     data: {},
     getCurrentServer: function getCurrentServer() {
-      return this.data.servers[this.currentServer];
+      if (this.data.servers[this.currentChannel]) {
+        return this.data.servers[this.currentServer];
+      } else {
+        return {
+          id: 0,
+          name: 'No server',
+          serverpic: '',
+          channels: [{
+            name: 'no channels',
+            messages: []
+          }]
+        };
+      }
     },
     getCurrentChannel: function getCurrentChannel() {
       return this.getCurrentServer().channels[this.currentChannel];

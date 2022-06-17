@@ -1,4 +1,5 @@
 .group-dialogue {
+  position: relative;
   display: grid;
   grid-template-rows: 1fr 75px;
   background-color: #fff;
@@ -320,6 +321,7 @@ a {
 ::-webkit-scrollbar-thumb {
   background-color: #5c5c5c;
 }
+
 .group-info .server-settings {
   width: 180px;
   height: 300px;
@@ -363,6 +365,7 @@ a {
   top: 180px;
 }
 .user-info {
+  position: relative;
   display: grid;
   grid-template-rows: 200px 1fr;
   height: 100vh;
@@ -455,4 +458,11 @@ a {
   margin: 0;
   line-height: 17px;
   font-size: 14px;
+}
+.user-info-modal {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translateX(-50%) translateY(-50%);
+  z-index: 5;
 }

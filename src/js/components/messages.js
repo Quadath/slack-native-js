@@ -6,51 +6,57 @@ const messages = (state) => {
 
     messageList.innerHTML = '';
 
-    state.getCurrentChannel().messages.forEach(item => {
-        if(item.text.includes(state.searchQuery)) {
-            const message = document.createElement('div'),
-                profilepic = document.createElement('img'),
-                name = document.createElement('span'),
-                time = document.createElement('span'),
-                text = document.createElement('span'),
-                wrapperFlDc = document.createElement('div'),
-                nameWrapper = document.createElement('div'),
-                textWrapper = document.createElement('div');
-    
-            profilepic.setAttribute('src', item.order['profilepic']);
-            name.textContent = item.order.name;
-            name.classList.add('name');
-            time.textContent = convertTime(item.time);
-            time.classList.add('time');
-            text.textContent = item.text;
-            text.classList.add('text');
-    
-            if (item.time - prevTime.getTime() < 60000) {
-                wrapperFlDc.classList.add('m47');
+    if (state.getCurrentChannel().messages.length > 0) {
+
+        state.getCurrentChannel().messages.forEach(item => {
+            if(item.text.includes(state.searchQuery)) {
+                const message = document.createElement('div'),
+                    profilepic = document.createElement('img'),
+                    name = document.createElement('span'),
+                    time = document.createElement('span'),
+                    text = document.createElement('span'),
+                    wrapperFlDc = document.createElement('div'),
+                    nameWrapper = document.createElement('div'),
+                    textWrapper = document.createElement('div');
+        
+                profilepic.setAttribute('src', item.order['profilepic']);
+                name.textContent = item.order.name;
+                name.classList.add('name');
+                time.textContent = convertTime(item.time);
+                time.classList.add('time');
+                text.textContent = item.text;
+                text.classList.add('text');
+        
+                if (item.time - prevTime.getTime() < 60000) {
+                    wrapperFlDc.classList.add('m47');
+                }
+                else {       
+                    nameWrapper.append(name);
+                    nameWrapper.append(time);
+                    message.append(profilepic);
+                }
+                textWrapper.append(text);
+        
+                wrapperFlDc.classList.add('fl-dc');
+                wrapperFlDc.append(nameWrapper);
+                wrapperFlDc.append(textWrapper);
+        
+                message.append(wrapperFlDc);
+        
+              message.classList.add('group-dialogue-messages-list-item')
+              messageList.append(message);
+              prevTime.setTime(item.time);
+              message.addEventListener('click', (e) => {
+                if(e.target.className == 'name') {
+                    state.setState('selectedUser', e.target.textContent);
+                }
+              })
             }
-            else {       
-                nameWrapper.append(name);
-                nameWrapper.append(time);
-                message.append(profilepic);
-            }
-            textWrapper.append(text);
-    
-            wrapperFlDc.classList.add('fl-dc');
-            wrapperFlDc.append(nameWrapper);
-            wrapperFlDc.append(textWrapper);
-    
-            message.append(wrapperFlDc);
-    
-          message.classList.add('group-dialogue-messages-list-item')
-          messageList.append(message);
-          prevTime.setTime(item.time);
-          message.addEventListener('click', (e) => {
-            if(e.target.className == 'name') {
-                state.setState('selectedUser', e.target.textContent);
-            }
-          })
-        }
-    })
+        })
+    }
+    else {
+        messageList.append(Divider('no messages!'));
+    }
 
     
     function convertTime(ms) {

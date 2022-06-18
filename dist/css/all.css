@@ -275,6 +275,7 @@
 body {
   margin: 0;
   overflow: hidden;
+  position: relative;
 }
 
 .main {
@@ -464,5 +465,50 @@ a {
   top: 50%;
   left: 50%;
   transform: translateX(-50%) translateY(-50%);
+  width: 300px;
   z-index: 5;
+  transform: translateX(-50%) translateY(-50%) rotateY(-90deg);
+  box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.4);
+  transition: 0.4s all;
+}
+.user-info-modal .modal-dialog {
+  margin: 0;
+}
+.user-info-modal-profilepic-wrapper {
+  padding: 4px;
+  position: absolute;
+  border-radius: 50%;
+  width: 60px;
+  height: 60px;
+  top: 20px;
+  background-color: #ffffff;
+}
+.user-info-modal-profilepic {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+}
+.user-info-modal .modal-header {
+  background-color: rgba(139, 255, 129, 0.6666666667);
+}
+.user-info-modal .modal-body {
+  padding-top: 30px;
+}
+.user-info-modal .modal-footer {
+  display: block;
+  justify-content: start;
+}
+.user-info-modal-background {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 100vw;
+  height: 100vh;
+  opacity: 0.4;
+  background-color: #fff;
+  transform: translateX(-50%) translateY(-50%);
+  z-index: -1;
+}
+.user-info-modal.active {
+  transform: translateX(-50%) translateY(-50%) rotateY(0deg);
 }

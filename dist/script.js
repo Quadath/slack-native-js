@@ -34,12 +34,11 @@ var changeState = function changeState(state) {
       messageInput = document.querySelector('#send-message');
   messageInput.value = state.messageInputValue;
   channels.forEach(function (item) {
-    console.log('called');
     item.addEventListener('click', function () {
       var index = state.getCurrentServer().channels.findIndex(function (chan) {
         return chan.name == item.childNodes[0].textContent.slice(2);
       });
-      setState('currentChannel', index);
+      state.setState('currentChannel', index);
     });
   });
   searchInput.addEventListener('input', function () {
@@ -412,6 +411,39 @@ exports["default"] = _default;
 
 /***/ }),
 
+/***/ "./src/js/components/user-info-modal.js":
+/*!**********************************************!*\
+  !*** ./src/js/components/user-info-modal.js ***!
+  \**********************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+exports.__esModule = true;
+exports["default"] = void 0;
+
+__webpack_require__(/*! core-js/modules/es.array.find.js */ "./node_modules/core-js/modules/es.array.find.js");
+
+__webpack_require__(/*! core-js/modules/es.object.to-string.js */ "./node_modules/core-js/modules/es.object.to-string.js");
+
+__webpack_require__(/*! core-js/modules/es.function.name.js */ "./node_modules/core-js/modules/es.function.name.js");
+
+var userInfoModal = function userInfoModal(state) {
+  var modal = document.querySelector('.user-info-modal'),
+      profilepic = document.querySelector('.user-info-modal-profilepic'),
+      username = document.querySelector('.user-info-modal-name'),
+      description = document.querySelector('.user-info-modal-about');
+  user = state.data.users.find(function (item) {
+    return item.name == state.selectedUser;
+  });
+  username.textContent = user.name;
+  profilepic.setAttribute('src', user.profilepic);
+  description.textContent = 'Hello!';
+};
+
+var _default = userInfoModal;
+exports["default"] = _default;
+
+/***/ }),
+
 /***/ "./src/js/components/user-info.js":
 /*!****************************************!*\
   !*** ./src/js/components/user-info.js ***!
@@ -432,12 +464,7 @@ var userInfo = function userInfo(state) {
       username = document.querySelector('.user-info-details-username'),
       email = document.querySelector('.user-info-details-email'),
       skype = document.querySelector('.user-info-details-skype'),
-      actionsButton = document.querySelector('.user-info-actions-other'),
-      actionsModal = document.querySelector('.user-info-actions-modal');
-  actionsButton.addEventListener('click', function () {
-    actionsModal.classList.toggle('active');
-  });
-  users = state.data.users;
+      users = state.data.users;
 
   if (state.selectedUser) {
     user = users.find(function (item) {
@@ -454,6 +481,40 @@ var userInfo = function userInfo(state) {
 };
 
 var _default = userInfo;
+exports["default"] = _default;
+
+/***/ }),
+
+/***/ "./src/js/components/userActionsModal.js":
+/*!***********************************************!*\
+  !*** ./src/js/components/userActionsModal.js ***!
+  \***********************************************/
+/***/ ((__unused_webpack_module, exports) => {
+
+exports.__esModule = true;
+exports["default"] = void 0;
+
+var userActionsModal = function userActionsModal() {
+  var profileButton = document.querySelector('[data-user-profile]'),
+      actionsButton = document.querySelector('.user-info-actions-other'),
+      actionsModal = document.querySelector('.user-info-actions-modal');
+  userInfoModalClose = document.querySelector('[data-user-profile-close]'), userInfoModal = document.querySelector('.user-info-modal');
+  actionsButton.addEventListener('click', function () {
+    actionsModal.classList.toggle('active');
+  });
+  userInfoModalClose.addEventListener('click', function () {
+    userInfoModal.classList.toggle('active');
+  }); // friendButton = document.querySelector('.'),
+  // blockButton = document.querySelector('.'),
+  // idButton = document.querySelector('.');
+
+  profileModal = document.querySelector('.user-info-modal');
+  profileButton.addEventListener('click', function () {
+    profileModal.classList.toggle('active');
+  });
+};
+
+var _default = userActionsModal;
 exports["default"] = _default;
 
 /***/ }),
@@ -6860,6 +6921,10 @@ var _userInfo = _interopRequireDefault(__webpack_require__(/*! ./components/user
 
 var _settingsModal = _interopRequireDefault(__webpack_require__(/*! ./components/settingsModal */ "./src/js/components/settingsModal.js"));
 
+var _userActionsModal = _interopRequireDefault(__webpack_require__(/*! ./components/userActionsModal */ "./src/js/components/userActionsModal.js"));
+
+var _userInfoModal = _interopRequireDefault(__webpack_require__(/*! ./components/user-info-modal */ "./src/js/components/user-info-modal.js"));
+
 var _changeState = _interopRequireDefault(__webpack_require__(/*! ./components/changeState */ "./src/js/components/changeState.js"));
 
 var _GetService = _interopRequireDefault(__webpack_require__(/*! ./services/GetService */ "./src/js/services/GetService.js"));
@@ -6873,7 +6938,7 @@ window.addEventListener('DOMContentLoaded', function () {
     currentServer: loadKey('currentServer', 0),
     currentChannel: loadKey('currentChannel', 0),
     messageInputValue: loadKey('messageInputValue', ''),
-    selectedUser: loadKey('selectedUser', ''),
+    selectedUser: loadKey('selectedUser', 'Jeshua Stout'),
     searchQuery: loadKey('searchQuery', ''),
     data: {},
     getCurrentServer: function getCurrentServer() {
@@ -6938,9 +7003,14 @@ window.addEventListener('DOMContentLoaded', function () {
   getService.getResource('/quadath').then(function (res) {
     state.data = res;
     update();
+    onDataLoaded();
   });
-  (0, _settingsModal["default"])(state);
-  (0, _changeState["default"])(state);
+
+  function onDataLoaded() {
+    (0, _settingsModal["default"])(state);
+    (0, _userActionsModal["default"])(state);
+    (0, _changeState["default"])(state);
+  }
 
   function update() {
     (0, _groupList["default"])(state);
@@ -6948,6 +7018,7 @@ window.addEventListener('DOMContentLoaded', function () {
     (0, _dialogueWindow["default"])(state);
     (0, _messages["default"])(state);
     (0, _userInfo["default"])(state);
+    (0, _userInfoModal["default"])(state);
   }
 });
 

@@ -90,24 +90,28 @@
         "users": [
             {
                 "name": "Orlando Diggs",
+                "profilepic": "../img/users/001.png",
                 "username": "orladig",
                 "email": "orladig@gmail.com",
                 "skype": "orladig98"
             },
             {
                 "name": "Carmen Velasco",
+                "profilepic": "../img/users/002.png",
                 "username": "careavel",
                 "email": "carmenvel@gmail.com",
                 "skype": "carmenvel"
             },
             {
                 "name": "Marie Jensen",
+                "profilepic": "../img/users/003.png",
                 "username": "marijen",
                 "email": "marijense@gmail.com",
                 "skype": "mariej"
             },
             {
                 "name": "Jeshua Stout",
+                "profilepic": "../img/users/004.png",
                 "username": "Jeshasto",
                 "email": "jeshasto@gmail.com",
                 "skype": "jeshuasto"

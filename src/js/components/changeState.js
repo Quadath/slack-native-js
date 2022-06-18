@@ -5,12 +5,11 @@ const changeState = (state) => {
 
     messageInput.value = state.messageInputValue;
     channels.forEach(item => {
-        console.log('called')
         item.addEventListener('click', () => {
             const index = state.getCurrentServer().channels.findIndex((chan) => {
                 return chan.name == item.childNodes[0].textContent.slice(2);
             })
-            setState('currentChannel', index);
+            state.setState('currentChannel', index);
         })
     });
 

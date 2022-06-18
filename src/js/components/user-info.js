@@ -3,13 +3,8 @@ const userInfo = (state) => {
         username = document.querySelector('.user-info-details-username'),
         email = document.querySelector('.user-info-details-email'),
         skype = document.querySelector('.user-info-details-skype'),
-        actionsButton = document.querySelector('.user-info-actions-other'),
-        actionsModal = document.querySelector('.user-info-actions-modal');
 
-    actionsButton.addEventListener('click', () => {
-        actionsModal.classList.toggle('active');
-    });
-
+    
     users = state.data.users;
     if(state.selectedUser) {
         user = users.find(item => item.name == state.selectedUser)

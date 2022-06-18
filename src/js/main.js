@@ -5,6 +5,8 @@ import messages from "./components/messages";
 import userInfo from "./components/user-info";
 
 import settingsModal from "./components/settingsModal";
+import userActionsModal from "./components/userActionsModal";
+import userInfoModal from "./components/user-info-modal";
 import changeState from './components/changeState'
 import GetService from "./services/GetService";
 
@@ -13,7 +15,7 @@ window.addEventListener('DOMContentLoaded', () => {
         currentServer: loadKey('currentServer', 0),
         currentChannel: loadKey('currentChannel', 0),
         messageInputValue: loadKey('messageInputValue', ''),
-        selectedUser: loadKey('selectedUser', ''),
+        selectedUser: loadKey('selectedUser', 'Jeshua Stout'),
         searchQuery: loadKey('searchQuery', ''),
         data: {
 
@@ -27,14 +29,12 @@ window.addEventListener('DOMContentLoaded', () => {
                     id: 0,
                     name: 'No server',
                     serverpic: '',
-                    channels: [
-                        {
-                            name: 'no channels',
-                            messages: [
-                                
-                            ]
-                        }
-                    ]
+                    channels: [{
+                        name: 'no channels',
+                        messages: [
+
+                        ]
+                    }]
                 }
             }
         },
@@ -66,10 +66,11 @@ window.addEventListener('DOMContentLoaded', () => {
             console.log(key);
         }
     }
+
     function loadKey(key, def) {
-        if(localStorage.getItem(key)) {
+        if (localStorage.getItem(key)) {
             value = localStorage.getItem(key);
-            if (typeof(value) === typeof(def)) {
+            if (typeof (value) === typeof (def)) {
                 return value
             } else {
                 return parseInt(value);
@@ -81,20 +82,27 @@ window.addEventListener('DOMContentLoaded', () => {
 
     const getService = new GetService();
     getService.getResource('/quadath')
-    .then(res => {
-        state.data = res;
-        update();
-    });
+        .then(res => {
+            state.data = res;
+            update();
+            onDataLoaded();
+        });
 
-    settingsModal(state);
-    changeState(state);
+    function onDataLoaded() {
+        settingsModal(state);
+        userActionsModal(state);
+        
+        changeState(state);
+    }
     
     function update() {
+        
         groupList(state);
         groupInfo(state);
         dialogueWindow(state);
         messages(state);
         userInfo(state);
+        userInfoModal(state);
     }
 
 });
